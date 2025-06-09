@@ -27,7 +27,6 @@ class FaqResource extends Resource
                 ->schema([
                     Forms\Components\TextInput::make('judul'),
                     Forms\Components\Textarea::make('deskripsi'),
-                    
                 ])
             ]);
     }
@@ -37,7 +36,8 @@ class FaqResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('judul'),
-                Tables\Columns\TextColumn::make('deskripsi'),
+                Tables\Columns\TextColumn::make('deskripsi')
+                     ->limit(70),
             ])
             ->filters([
                 //

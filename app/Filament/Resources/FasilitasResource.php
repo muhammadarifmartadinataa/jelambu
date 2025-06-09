@@ -6,6 +6,7 @@ use App\Filament\Resources\FasilitasResource\Pages;
 use App\Filament\Resources\FasilitasResource\RelationManagers;
 use App\Models\Fasilitas;
 use Filament\Forms;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,9 +24,12 @@ class FasilitasResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama'),
-                Forms\Components\FileUpload::make('icon')
-                ->directory('fasilitas'),
+                Grid::make(1)
+                    ->schema([
+                        Forms\Components\TextInput::make('nama'),
+                        Forms\Components\FileUpload::make('icon')
+                        ->directory('fasilitas'),
+                    ])
             ]);
     }
 

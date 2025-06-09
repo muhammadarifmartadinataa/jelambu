@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Kabupaten extends Model
 {
     protected $guarded = ['id'];
-    protected $fillable = ['nama_kabupaten'];
+    protected $fillable = ['nama_kabupaten', 'logo'];
 
     public function wisata(){
         return $this->hasMany(Wisata::class);

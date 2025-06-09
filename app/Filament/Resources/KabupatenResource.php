@@ -6,6 +6,7 @@ use App\Filament\Resources\KabupatenResource\Pages;
 use App\Filament\Resources\KabupatenResource\RelationManagers;
 use App\Models\Kabupaten;
 use Filament\Forms;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,7 +24,17 @@ class KabupatenResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama_kabupaten'),
+                Grid::make(1)
+                    ->schema([
+                        Forms\Components\TextInput::make('nama_kabupaten')
+                            ->required()
+                            ->string()
+                            ->maxLength(255),
+                        Forms\Components\FileUpload::make('logo')
+                            ->required()
+                            ->image()
+                            ->directory('logo-kabupaten'),
+                    ])
             ]);
     }
 
@@ -32,6 +43,7 @@ class KabupatenResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama_kabupaten'),
+                Tables\Columns\ImageColumn::make('logo'),
             ])
             ->filters([
                 //

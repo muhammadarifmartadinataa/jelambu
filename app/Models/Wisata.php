@@ -29,6 +29,6 @@ class Wisata extends Model
     }
 
      public function fasilitas(){
-        return $this->hasMany(FasilitasWisata::class);
+        return $this->belongsToMany(Fasilitas::class, 'fasilitas_wisatas');
     }
 }
