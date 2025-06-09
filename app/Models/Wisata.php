@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Wisata extends Model
 {
     protected $guarded = ['id'];
+
+    protected $casts = [
+        'galeri' => 'array'
+    ];
+
     protected $fillable = [
         'nama', 
         'lokasi', 
