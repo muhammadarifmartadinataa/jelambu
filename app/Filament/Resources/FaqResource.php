@@ -12,7 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Filament\Forms\Components\Section;
 class FaqResource extends Resource
 {
     protected static ?string $model = Faq::class;
@@ -23,7 +23,12 @@ class FaqResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Section::make()
+                ->schema([
+                    Forms\Components\TextInput::make('judul'),
+                    Forms\Components\Textarea::make('deskripsi'),
+                    
+                ])
             ]);
     }
 
@@ -31,7 +36,8 @@ class FaqResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('judul'),
+                Tables\Columns\TextColumn::make('deskripsi'),
             ])
             ->filters([
                 //
