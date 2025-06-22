@@ -19,7 +19,11 @@ class WisataResource extends Resource
 {
     protected static ?string $model = Wisata::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-globe-asia-australia';
+
+    protected static ?string $navigationLabel = 'Wisata';
+
+    protected static ?string $pluralLabel = 'Wisata';
 
     public static function form(Form $form): Form
     {
@@ -100,15 +104,12 @@ class WisataResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('thumbnail'),
-                Tables\Columns\TextColumn::make('nama'),
+                Tables\Columns\TextColumn::make('nama')
+                    ->label('Nama Wisata'),
                 Tables\Columns\TextColumn::make('lokasi'),
-                Tables\Columns\TextColumn::make('deskripsi'),
-                Tables\Columns\TextColumn::make('rating'),              
-                Tables\Columns\TextColumn::make('latitude'),
-                Tables\Columns\TextColumn::make('longitude'),
-                Tables\Columns\TextColumn::make('video'),
                 Tables\Columns\TextColumn::make('kabupaten.nama_kabupaten'),
+                Tables\Columns\TextColumn::make('rating')
+                    ->badge(),              
             ])
             ->filters([
                 //

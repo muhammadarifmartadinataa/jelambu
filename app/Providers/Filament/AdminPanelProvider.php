@@ -53,6 +53,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->sidebarCollapsibleOnDesktop()
+            ->sidebarWidth('16rem')
+            ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }
