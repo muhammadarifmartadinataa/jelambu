@@ -18,7 +18,13 @@ class KabupatenResource extends Resource
 {
     protected static ?string $model = Kabupaten::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
+
+    protected static ?string $navigationLabel = 'Kabupaten';
+
+    protected static ?string $pluralLabel = 'Kabupaten';
+
+    protected static ?string $navigationGroup = 'Data Master';
 
     public static function form(Form $form): Form
     {

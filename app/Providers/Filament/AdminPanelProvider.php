@@ -6,6 +6,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -28,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => '#1E4DB7',
+                'primary' => '#2371ED',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -53,6 +54,20 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->sidebarCollapsibleOnDesktop()
+            ->sidebarWidth('16rem')
+            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->brandLogo(fn () => view('logo'))
+            ->brandLogoHeight('3rem')
+            ->favicon(asset('assets/images/logo/favicon.ico'))
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Data Master')
+                    ->collapsible(false),
+                NavigationGroup::make()
+                    ->label('Data Wisata')
+                    ->collapsible(false),
             ]);
     }
 }

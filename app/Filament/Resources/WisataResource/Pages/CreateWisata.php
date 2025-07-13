@@ -8,5 +8,7 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateWisata extends CreateRecord
 {
+    protected static ?string $title = 'Tambah Wisata';
+
     protected static string $resource = WisataResource::class;
 }

@@ -12,14 +12,18 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class WisataResource extends Resource
 {
     protected static ?string $model = Wisata::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-globe-asia-australia';
+
+    protected static ?string $navigationLabel = 'Wisata';
+
+    protected static ?string $pluralLabel = 'Wisata';
+
+    protected static ?string $navigationGroup = 'Data Wisata';
 
     public static function form(Form $form): Form
     {
@@ -32,55 +36,77 @@ class WisataResource extends Resource
                                 Forms\Components\TextInput::make('nama')
                                     ->required()
                                     ->maxLength(255)
-                                    ->label('Nama Wisata'),
+                                    ->label('Nama Wisata')
+                                    ->placeholder('Contoh: Destinasi Wisata Pantai Mutun'),
                                 Grid::make(2)
                                     ->schema([
                                         Forms\Components\TextInput::make('lokasi')
                                             ->required()
                                             ->maxLength(255)
-                                            ->label('Desa & Kecamatan'),
+                                            ->label('Desa & Kecamatan')
+                                            ->placeholder('Contoh: Sukajaya, Padang Cermin'),
                                         Forms\Components\Select::make('kabupaten_id')
                                             ->required()
                                             ->relationship('kabupaten', 'nama_kabupaten'),
                                         ]),
-                                    Grid::make(3)
-                                    ->schema([
-                                        Forms\Components\TextInput::make('rating')
-                                            ->required()
-                                            ->numeric()
-                                            ->minValue(1)
-                                            ->maxValue(5)
-                                            ->step(0.1),
-                                        Forms\Components\TextInput::make('latitude')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('longitude')
-                                            ->required(),
+                                    Grid::make(2)
+                                        ->schema([
+                                            Forms\Components\TextInput::make('rating')
+                                                ->required()
+                                                ->numeric()
+                                                ->minValue(1)
+                                                ->maxValue(5)
+                                                ->step(0.5)
+                                                ->placeholder('4.5'),
+                                            Forms\Components\TextInput::make('twitter_keyword')
+                                                ->required()
+                                                ->placeholder('Contoh: pantai mutun')
+                                                ->label('Keyword Twitter'),
                                     ]),
                                     Forms\Components\RichEditor::make('deskripsi')
                                         ->required()
                                         ->disableToolbarButtons([
                                             'attachFiles',
-                                        ]),
+                                        ])
+                                        ->placeholder('Tulis semua yang berkaitan dengan wisata...'),
                             ])->columnSpan(2),
                         Grid::make(1)
                             ->schema([
+                                Section::make('Thumbnail & Video')
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('thumbnail')
+                                            ->required()
+                                            ->image()
+                                            ->directory('thumbnail'),
+                                        Forms\Components\TextInput::make('video')
+                                            ->maxLength(255)
+                                            ->label('Link Video Youtube')
+                                            ->placeholder('Contoh: https://www.youtube.com/watch?v=ZQ5F9MgR2b8'),
+                                    ]),
                                 Section::make('Fasilitas Wisata')
                                     ->schema([
                                         Forms\Components\Select::make('fasilitas')
                                             ->relationship('fasilitas', 'nama')
                                             ->multiple()
                                             ->preload()
-                                            ->hiddenLabel(true),
+                                            ->hiddenLabel(true)
+                                            ->searchable(),
                                     ]),
-                                Section::make('Thumbnail & Video')
+                                Section::make('Lokasi & Maps')
                                     ->schema([
-                                        Forms\Components\TextInput::make('video')
-                                            ->maxLength(255)
-                                            ->label('Link Video Youtube'),
-                                        Forms\Components\FileUpload::make('thumbnail')
+                                        Grid::make(2)
+                                            ->schema([
+                                                Forms\Components\TextInput::make('latitude')
+                                                    ->required()
+                                                    ->placeholder('Contoh: -6.200000'),
+                                                Forms\Components\TextInput::make('longitude')
+                                                    ->required()
+                                                    ->placeholder('Contoh: 106.800000'),
+                                            ]),
+                                        Forms\Components\TextInput::make('maps_link')
                                             ->required()
-                                            ->image()
-                                            ->directory('thumbnail'),
+                                            ->placeholder('Contoh: https://maps.app.goo.gl/rf3AX3NTZgjXZmJw7')
+                                            ->label('Google Maps Link'),
                                     ]),
                             ])->columnSpan(1)
                     ]),
@@ -100,18 +126,17 @@ class WisataResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('thumbnail'),
-                Tables\Columns\TextColumn::make('nama'),
+                Tables\Columns\TextColumn::make('nama')
+                    ->label('Nama Wisata')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('lokasi'),
-                Tables\Columns\TextColumn::make('deskripsi'),
-                Tables\Columns\TextColumn::make('rating'),              
-                Tables\Columns\TextColumn::make('latitude'),
-                Tables\Columns\TextColumn::make('longitude'),
-                Tables\Columns\TextColumn::make('video'),
-                Tables\Columns\TextColumn::make('kabupaten.nama_kabupaten'),
+                Tables\Columns\TextColumn::make('kabupaten.nama_kabupaten')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('rating')
+                    ->badge(),              
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

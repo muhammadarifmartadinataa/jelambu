@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Wisata extends Model
 {
@@ -14,6 +16,7 @@ class Wisata extends Model
 
     protected $fillable = [
         'nama', 
+        'slug',
         'lokasi', 
         'deskripsi', 
         'galeri', 
@@ -22,7 +25,24 @@ class Wisata extends Model
         'longitude', 
         'thumbnail', 
         'video', 
-        'kabupaten_id'];
+        'kabupaten_id',
+        'maps_link',
+        'twitter_keyword'
+    ];
+
+    
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($wisata) {
+            $wisata->slug = Str::slug($wisata->nama);
+        });
+
+        static::updating(function ($wisata) {
+            $wisata->slug = Str::slug($wisata->nama);
+        });
+    }
 
     public function kabupaten(){
         return $this->belongsTo(Kabupaten::class);

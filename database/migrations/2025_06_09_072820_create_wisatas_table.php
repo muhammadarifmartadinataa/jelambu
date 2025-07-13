@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('wisatas', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
+            $table->string('slug')->unique();
             $table->string('lokasi');
             $table->text('deskripsi');
             $table->json('galeri');
@@ -21,7 +22,7 @@ return new class extends Migration
             $table->string('latitude');
             $table->string('longitude');
             $table->string('thumbnail');
-            $table->string('video');
+            $table->string('video')->nullable();
             $table->foreignId('kabupaten_id')->constrained('kabupatens')->onDelete('cascade');
             $table->timestamps();
         });

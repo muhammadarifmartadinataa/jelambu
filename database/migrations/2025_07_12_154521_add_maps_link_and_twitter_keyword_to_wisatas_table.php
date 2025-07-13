@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('faqs', function (Blueprint $table) {
-            $table->id();
-            $table->string('judul');
-            $table->text('deskripsi');
-            $table->timestamps();
+        Schema::table('wisatas', function (Blueprint $table) {
+            $table->string('maps_link')->after('longitude');
+            $table->string('twitter_keyword')->after('maps_link');
         });
     }
 
@@ -24,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('faqs');
+        Schema::table('wisatas', function (Blueprint $table) {
+            $table->dropColumn(['maps_link', 'twitter_keyword']);
+        });
     }
 };
