@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\SeoHelper;
 use App\Models\Wisata;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,10 +21,35 @@ class ReviewController extends Controller
 
         $destinations = Wisata::all()->pluck('twitter_keyword');
 
+        // SEO Meta Tags untuk homepage
+        $meta = SeoHelper::generateMetaTags([
+            'title' => 'Ulasan - ' . config('app.name'),
+            'description' => 'Cari tahu apa yang orang - orang katakan di Twitter/X tentang destinasi wisata di Lampung.',
+            'keywords' => 'wisata lampung, destinasi wisata, tempat wisata, liburan lampung, pariwisata, travel lampung, pantai lampung, ai, chatbot ai, ajel ai',
+            'url' => route('reviews'),
+            'type' => 'website'
+        ]);
+
+        // Structured Data untuk website
+        $structuredData = SeoHelper::generateStructuredData('website', [
+            'name' => config('app.name'),
+            'url' => route('reviews'),
+            'search_url' => route('wisata')
+        ]);
+
+        // Breadcrumb
+        $breadcrumbStructuredData = SeoHelper::generateBreadcrumbStructuredData([
+            ['name' => 'Beranda', 'url' => route('beranda')],
+            ['name' => 'Ulasan', 'url' => route('reviews')]
+        ]);
+
         return Inertia::render('Reviews', [
             'currentLang' => $lang,
             'translations' => $this->getTranslations($lang),
-            'destinations' => $destinations
+            'destinations' => $destinations,
+            'meta' => $meta,
+            'structuredData' => $structuredData,
+            'breadcrumbStructuredData' => $breadcrumbStructuredData,
         ]);
     }
 

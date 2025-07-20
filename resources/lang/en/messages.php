@@ -4,8 +4,8 @@ return [
     // Navigation
     'nav' => [
         'home' => 'Home',
-        'regencies' => 'Regencies',
-        'destinations' => 'Destinations',
+        'regencies' => 'Regencies List',
+        'destinations' => 'Destinations List',
         'chatbot' => 'AI Chatbot',
         'reviews' => 'Reviews',
     ],

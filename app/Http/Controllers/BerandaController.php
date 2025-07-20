@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\SeoHelper;
 use App\Models\Kabupaten;
 use App\Models\Wisata;
 use Illuminate\Http\Request;
@@ -18,13 +19,31 @@ class BerandaController extends Controller
         $kabupatens = Kabupaten::withCount('wisatas')->get();
         $wisatas = Wisata::with('kabupaten')->take(6)->get();
         $destinations = Wisata::all()->pluck('twitter_keyword');
+
+        // SEO Meta Tags untuk homepage
+        $meta = SeoHelper::generateMetaTags([
+            'title' => 'Jelajah Lampung Biru - ' . config('app.name'),
+            'description' => 'Temukan keindahan wisata biru Lampung yang menakjubkan. Dari pantai eksotis hingga laut yang memukau.',
+            'keywords' => 'wisata lampung, destinasi wisata, tempat wisata, liburan lampung, pariwisata, travel lampung, pantai lampung',
+            'url' => route('beranda'),
+            'type' => 'website'
+        ]);
+
+        // Structured Data untuk website
+        $structuredData = SeoHelper::generateStructuredData('website', [
+            'name' => config('app.name'),
+            'url' => route('beranda'),
+            'search_url' => route('wisata')
+        ]);
         
         return Inertia::render('Beranda', [
             'kabupatens' => $kabupatens,
             'wisatas' => $wisatas,
             'currentLang' => $lang,
             'translations' => $this->getTranslations($lang),
-            'destinations' => $destinations
+            'destinations' => $destinations,
+            'meta' => $meta,
+            'structuredData' => $structuredData
         ]);
     }
     

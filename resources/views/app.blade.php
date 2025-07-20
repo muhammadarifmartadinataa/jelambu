@@ -4,8 +4,46 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title inertia>{{ config('app.name') }} -</title>
+        <!-- Dynamic Title -->
+        <title inertia>{{ $page['props']['meta']['title'] ?? config('app.name') }}</title>
 
+        <!-- Basic Meta Tags -->
+        <meta name="description" content="{{ $page['props']['meta']['description'] ?? 'Temukan keindahan wisata biru Lampung yang menakjubkan. Dari pantai eksotis hingga laut yang memukau.' }}">
+        <meta name="keywords" content="{{ $page['props']['meta']['keywords'] ?? '' }}">
+        <meta name="robots" content="{{ $page['props']['meta']['robots'] ?? 'index,follow' }}">
+        <meta name="author" content="{{ config('app.name') }}">
+        <link rel="canonical" href="{{ $page['props']['meta']['canonical'] ?? request()->url() }}">
+
+        <!-- Open Graph Meta Tags -->
+        <meta property="og:title" content="{{ $page['props']['meta']['og:title'] ?? config('app.name') }}">
+        <meta property="og:description" content="{{ $page['props']['meta']['og:description'] ?? 'Temukan keindahan wisata biru Lampung yang menakjubkan. Dari pantai eksotis hingga laut yang memukau.' }}">
+        <meta property="og:image" content="{{ $page['props']['meta']['og:image'] ?? asset('assets/images/logo/og-image.jpg') }}">
+        <meta property="og:url" content="{{ $page['props']['meta']['og:url'] ?? request()->url() }}">
+        <meta property="og:type" content="{{ $page['props']['meta']['og:type'] ?? 'website' }}">
+        <meta property="og:site_name" content="{{ $page['props']['meta']['og:site_name'] ?? config('app.name') }}">
+        <meta property="og:locale" content="{{ $page['props']['meta']['og:locale'] ?? app()->getLocale() }}">
+
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $page['props']['meta']['twitter:title'] ?? config('app.name') }}">
+        <meta name="twitter:description" content="{{ $page['props']['meta']['twitter:description'] ?? 'Temukan keindahan wisata biru Lampung yang menakjubkan. Dari pantai eksotis hingga laut yang memukau.' }}">
+        <meta name="twitter:image" content="{{ $page['props']['meta']['twitter:image'] ?? asset('assets/images/logo/og-image.jpg') }}">
+
+        <!-- Structured Data -->
+        @if(isset($page['props']['structuredData']))
+            <script type="application/ld+json">
+                {!! json_encode($page['props']['structuredData'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+            </script>
+        @endif
+
+        <!-- Breadcrumb Structured Data -->
+        @if(isset($page['props']['breadcrumbStructuredData']))
+            <script type="application/ld+json">
+                {!! json_encode($page['props']['breadcrumbStructuredData'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+            </script>
+        @endif
+
+        <!-- Favicon -->
         <link rel="icon" href="{{ asset('assets/images/logo/favicon.ico') }}" type="image/x-icon">
 
         <!-- Fonts -->

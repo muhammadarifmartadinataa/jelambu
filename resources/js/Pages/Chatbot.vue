@@ -5,7 +5,7 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import axios from 'axios'
 
 const props = defineProps({
-    currentLang: String
+    currentLang: String,
 })
 
 const page = usePage()

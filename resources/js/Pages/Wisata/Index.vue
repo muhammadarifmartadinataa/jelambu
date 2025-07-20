@@ -6,7 +6,7 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 const props = defineProps({
     wisatas: Array,
     kabupatens: Array,
-    currentLang: String
+    currentLang: String,
 })
 
 const page = usePage()
@@ -147,7 +147,7 @@ const resetFilters = () => {
                     >
                         <div class="relative h-48">
                             <img 
-                                :src="wisata.thumbnail || '/images/placeholder.jpg'" 
+                                :src="'/storage/' + wisata.thumbnail" 
                                 :alt="wisata.nama"
                                 class="w-full h-full object-cover"
                             >

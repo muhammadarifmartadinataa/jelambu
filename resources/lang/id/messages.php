@@ -4,8 +4,8 @@ return [
     // Navigation
     'nav' => [
         'home' => 'Beranda',
-        'regencies' => 'Kabupaten',
-        'destinations' => 'Wisata',
+        'regencies' => 'Daftar Kabupaten',
+        'destinations' => 'Daftar Wisata',
         'chatbot' => 'Chatbot AI',
         'reviews' => 'Ulasan',
     ],

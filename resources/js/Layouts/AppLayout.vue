@@ -1,10 +1,6 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import { Link, usePage, Head } from '@inertiajs/vue3'
-
-const showMobileMenu = ref(false)
-const showLanguageDropdown = ref(false)
-const languageDropdown = ref(null)
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { Link, usePage } from '@inertiajs/vue3'
 
 const props = defineProps({
     currentLang: {
@@ -13,7 +9,23 @@ const props = defineProps({
     }
 })
 
+const showMobileMenu = ref(false)
+const showLanguageDropdown = ref(false)
+const languageDropdown = ref(null)
 const page = usePage()
+const isScrolled = ref(false)
+
+const currentRoute = computed(() => usePage().url)
+
+const isHomePage = computed(() => currentRoute.value === '/')
+
+const navItems = [
+  { label: 'nav.home', route: 'beranda', components: ['Beranda'] },
+  { label: 'nav.regencies', route: 'kabupaten', components: ['Kabupaten'] },
+  { label: 'nav.destinations', route: 'wisata', components: ['Wisata/Index', 'Wisata/Show'] },
+  { label: 'nav.chatbot', route: 'chatbot', components: ['Chatbot'] },
+  { label: 'nav.reviews', route: 'reviews', components: ['Reviews'] }
+]
 
 // Translation helper
 const __t = (key) => {
@@ -33,78 +45,86 @@ const handleClickOutside = (event) => {
     }
 }
 
+const handleScroll = () => {
+    if (!isHomePage.value) return
+    isScrolled.value = window.scrollY > 10
+}
+
+const isActive = (components) => components.includes(page.component)
+
+const navClass = (active) => {
+  if (active) return 'text-primary-600'
+  return isScrolled.value
+    ? 'text-gray-700 hover:text-primary-600'
+    : 'text-white hover:text-primary-600'
+}
+
 onMounted(() => {
     document.addEventListener('click', handleClickOutside)
+    if (isHomePage.value) {
+        window.addEventListener('scroll', handleScroll)
+    } else {
+        isScrolled.value = true
+    }
 })
 
 onUnmounted(() => {
     document.removeEventListener('click', handleClickOutside)
+    document.removeEventListener('scroll', handleScroll)
 })
 </script>
 <template>
-    <Head>
-        <meta head-key="description" name="description" content="Temukan keindahan wisata biru Lampung yang menakjubkan. Dari pantai eksotis hingga laut yang memukau." />
-    </Head>
-
     <div class="min-h-screen bg-gray-50 font-sans">
         <!-- Navigation -->
-        <nav class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200/50 shadow-sm">
+        <nav 
+            :class="[
+                'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+                isScrolled
+                ? 'bg-white shadow-md'
+                : 'bg-transparent backdrop-blur-sm'
+            ]"
+            >
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-20">
                     <!-- Logo -->
                     <Link :href="route('beranda')">
-                        <img src="/assets/images/logo/logo-jelambu.svg" alt="Jelambu" class="h-16">
+                        <img 
+                            :src="isScrolled ? '/assets/images/logo/logo-jelambu.svg' : '/assets/images/logo/logo-jelambu-light.svg'"
+                            alt="Jelambu"
+                            class="h-16"
+                        >
                     </Link>
 
                     <!-- Desktop Navigation -->
                     <div class="hidden md:flex items-center space-x-8">
-                        <Link 
-                            :href="route('beranda')" 
-                            class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
-                            :class="{ 'text-primary-600': $page.component === 'Beranda' }"
+                        <Link
+                            v-for="item in navItems"
+                            :key="item.route"
+                            :href="route(item.route)"
+                            class="font-medium transition-colors duration-200"
+                            :class="navClass(isActive(item.components))"
                         >
-                            {{ __t('nav.home') }}
-                        </Link>
-                        <Link 
-                            :href="route('kabupaten')" 
-                            class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
-                            :class="{ 'text-primary-600': $page.component === 'Kabupaten' }"
-                        >
-                            {{ __t('nav.regencies') }}
-                        </Link>
-                        <Link 
-                            :href="route('wisata')" 
-                            class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
-                            :class="{ 'text-primary-600': $page.component === 'Wisata/Index' || $page.component === 'Wisata/Show' }"
-                        >
-                            {{ __t('nav.destinations') }}
-                        </Link>
-                        <Link 
-                            :href="route('chatbot')" 
-                            class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
-                            :class="{ 'text-primary-600': $page.component === 'Chatbot' }"
-                        >
-                            {{ __t('nav.chatbot') }}
-                        </Link>
-                        <Link 
-                            :href="route('reviews')" 
-                            class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
-                            :class="{ 'text-primary-600': $page.component === 'Reviews' }"
-                        >
-                            {{ __t('nav.reviews') }}
+                            {{ __t(item.label) }}
                         </Link>
                     </div>
 
                     <!-- Language Switcher & Mobile Menu -->
-                    <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
                         <!-- Language Switcher -->
                         <div class="relative" ref="languageDropdown">
                             <button 
                                 @click="showLanguageDropdown = !showLanguageDropdown"
-                                class="flex items-center space-x-2 px-3 py-2 rounded-lg border border-gray-200 hover:border-primary-300 transition-colors duration-200"
-                            >
-                                <span class="text-sm font-medium">{{ currentLang.toUpperCase() }}</span>
-                                <i class="ti ti-chevron-down text-sm"></i>
+                                class="flex items-center space-x-2 px-3 py-2 rounded-lg border transition-colors duration-200"
+                                :class="[
+                                    isScrolled
+                                    ? 'border-gray-200 hover:border-primary-600'
+                                    : 'border-white hover:border-white/70'
+                                ]"
+                                >
+                                <span class="text-sm font-medium" :class="isScrolled ? 'text-gray-700' : 'text-white'">
+                                    {{ currentLang.toUpperCase() }}
+                                </span>
+                                <i class="ti ti-chevron-down text-sm" :class="isScrolled ? 'text-gray-700' : 'text-white'"></i>
                             </button>
                             
                             <div 
@@ -131,9 +151,10 @@ onUnmounted(() => {
                         <!-- Mobile Menu Button -->
                         <button 
                             @click="showMobileMenu = !showMobileMenu"
-                            class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-                        >
-                            <i class="ti ti-menu-2 text-xl"></i>
+                            class="md:hidden py-1.5 px-3 rounded-lg transition-colors duration-200"
+                            :class="isScrolled ? 'hover:bg-gray-100' : 'hover:bg-white/20'"
+                            >
+                            <i class="ti ti-menu-2 text-xl" :class="isScrolled ? 'text-gray-700' : 'text-white'"></i>
                         </button>
                     </div>
                 </div>
@@ -144,45 +165,21 @@ onUnmounted(() => {
                     class="md:hidden py-4 border-t border-gray-200"
                 >
                     <div class="space-y-2">
-                        <Link 
-                            :href="route('beranda')" 
-                            class="block px-4 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors duration-200"
-                            :class="{ 'text-white bg-primary-600': $page.component === 'Beranda' }"
+                        <Link
+                            v-for="item in navItems"
+                            :key="item.route"
+                            :href="route(item.route)"
+                            class="block px-4 py-2 rounded-lg transition-colors duration-200"
+                            :class="[
+                            isActive(item.components)
+                                ? 'text-white bg-primary-600'
+                                : isScrolled
+                                ? 'text-gray-700 hover:text-primary-600 hover:bg-primary-50'
+                                : 'text-white hover:text-primary-600 hover:bg-white/10'
+                            ]"
                             @click="showMobileMenu = false"
                         >
-                            {{ __t('nav.home') }}
-                        </Link>
-                        <Link 
-                            :href="route('kabupaten')" 
-                            class="block px-4 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors duration-200"
-                            :class="{ 'text-white bg-primary-600': $page.component === 'Kabupaten' }"
-                            @click="showMobileMenu = false"
-                        >
-                            {{ __t('nav.regencies') }}
-                        </Link>
-                        <Link 
-                            :href="route('wisata')" 
-                            class="block px-4 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors duration-200"
-                            :class="{ 'text-white bg-primary-600': $page.component === 'Wisata/Index' || $page.component === 'Wisata/Show' }"
-                            @click="showMobileMenu = false"
-                        >
-                            {{ __t('nav.destinations') }}
-                        </Link>
-                        <Link 
-                            :href="route('chatbot')" 
-                            class="block px-4 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors duration-200"
-                            :class="{ 'text-white bg-primary-600': $page.component === 'Chatbot' }"
-                            @click="showMobileMenu = false"
-                        >
-                            {{ __t('nav.chatbot') }}
-                        </Link>
-                        <Link 
-                            :href="route('reviews')" 
-                            class="block px-4 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors duration-200"
-                            :class="{ 'text-white bg-primary-600': $page.component === 'Reviews' }"
-                            @click="showMobileMenu = false"
-                        >
-                            {{ __t('nav.reviews') }}
+                            {{ __t(item.label) }}
                         </Link>
                     </div>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\SeoHelper;
 use Illuminate\Http\Request;
 use App\Models\Wisata;
 use Illuminate\Support\Facades\Http;
@@ -14,10 +15,35 @@ class ChatbotController extends Controller
         $lang = $request->get('lang', session('locale', 'id'));
         session(['locale' => $lang]);
         app()->setLocale($lang);
+
+        // SEO Meta Tags untuk homepage
+        $meta = SeoHelper::generateMetaTags([
+            'title' => 'Chatbot AI - ' . config('app.name'),
+            'description' => 'Asisten wisata AI yang siap membantu Anda menemukan destinasi wisata biru terbaik di Lampung. Tanyakan apa saja tentang wisata dan tips perjalanan!',
+            'keywords' => 'wisata lampung, destinasi wisata, tempat wisata, liburan lampung, pariwisata, travel lampung, pantai lampung, ai, chatbot ai, ajel ai',
+            'url' => route('chatbot'),
+            'type' => 'website'
+        ]);
+
+        // Structured Data untuk website
+        $structuredData = SeoHelper::generateStructuredData('website', [
+            'name' => config('app.name'),
+            'url' => route('chatbot'),
+            'search_url' => route('wisata')
+        ]);
+
+        // Breadcrumb
+        $breadcrumbStructuredData = SeoHelper::generateBreadcrumbStructuredData([
+            ['name' => 'Beranda', 'url' => route('beranda')],
+            ['name' => 'Chatbot AI', 'url' => route('chatbot')]
+        ]);
         
         return Inertia::render('Chatbot', [
             'currentLang' => $lang,
-            'translations' => $this->getTranslations($lang)
+            'translations' => $this->getTranslations($lang),
+            'meta' => $meta,
+            'structuredData' => $structuredData,
+            'breadcrumbStructuredData' => $breadcrumbStructuredData
         ]);
     }
     

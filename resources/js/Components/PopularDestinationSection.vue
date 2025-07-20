@@ -21,8 +21,7 @@
                         <div class="bg-white hover:ring-2 hover:ring-primary-600 rounded-xl shadow-sm overflow-hidden h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
                             <div class="relative h-48">
                                 <img 
-                                    :src="wisata.thumbnail || 
-                                    '/images/placeholder.jpg'" 
+                                    :src="'/storage/' + wisata.thumbnail" 
                                     :alt="wisata.nama"
                                     class="w-full h-full object-cover" loading="lazy"
                                 >

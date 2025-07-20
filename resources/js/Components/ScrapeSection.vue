@@ -58,10 +58,11 @@ onMounted(() => {
             modules: [Autoplay],
             loop: true,
             autoplay: { delay: 3000 },
-            grabCursor: true,
+            grabCursor: false,
             direction: 'vertical',
             slidesPerView: 3,
             spaceBetween: 14,
+            allowTouchMove: false,
         })
     }
 

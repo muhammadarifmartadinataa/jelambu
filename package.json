@@ -3,8 +3,9 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "build": "vite build && vite build --ssr",
+        "build:ssr": "vite build --ssr"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
@@ -20,6 +21,7 @@
     "dependencies": {
         "@inertiajs/vue3": "^2.0.14",
         "@vitejs/plugin-vue": "^6.0.0",
+        "@vue/server-renderer": "^3.5.17",
         "axios": "^1.10.0",
         "leaflet": "^1.9.4",
         "swiper": "^11.2.9",

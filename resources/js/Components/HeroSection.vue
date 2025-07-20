@@ -1,312 +1,230 @@
-<template>
-    <section class="hero-section h-screen relative overflow-hidden">
-        <div class="swiper w-full h-full heroSwiper" ref="swiperContainer">
-            <div class="swiper-wrapper">
-                <!-- Slide 1 -->
-                <div v-for="slide in slides" :key="slide.id" class="swiper-slide flex relative items-center justify-center overflow-hidden cursor-grab">
-                    <div class="super-flow-image">
-                        <img :src="slide.image" :alt="slide.alt">
-                        <div class="super-flow-fragments">
-                            <div :class="`super-flow-fragment-border fragment-1-border`"></div>
-                            <img :src="slide.image" class="super-flow-fragment fragment-1">
-                            
-                            <div class="super-flow-fragment-border fragment-2-border"></div>
-                            <img :src="slide.image" class="super-flow-fragment fragment-2">
-                            
-                            <div class="super-flow-fragment-border fragment-3-border"></div>
-                            <img :src="slide.image" class="super-flow-fragment fragment-3">
-                            
-                            <div class="super-flow-fragment-border fragment-4-border"></div>
-                            <img :src="slide.image" class="super-flow-fragment fragment-4">
-                            
-                            <div class="super-flow-fragment-border fragment-5-border"></div>
-                            <img :src="slide.image" class="super-flow-fragment fragment-5">
-                            
-                            <div class="super-flow-fragment-border fragment-6-border"></div>
-                            <img :src="slide.image" class="super-flow-fragment fragment-6">
-                        </div>
-                    </div>
-                    <div class="super-flow-content max-w-xs md:max-w-3xl absolute z-10 text-center transition-all duration-[6000ms] ease-linear">
-                        <h1 class="mb-4 text-2xl md:text-4xl lg:text-5xl text-white font-bold leading-tight">
-                            {{ __t('home.hero_title') }}<br>
-                            <span class="">{{ __t('home.hero_subtitle') }}</span>
-                        </h1>
-                        <p class="text-sm md:text-lg lg:text-xl text-gray-200 leading-tight">
-                            {{ __t('home.hero_description') }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="swiper-pagination"></div>
-        </div>
-    </section>
-</template>
-
 <script setup>
-import { ref, onMounted } from 'vue'
-import { Link, usePage } from '@inertiajs/vue3'
-import { Swiper } from 'swiper'
-import { Pagination, Autoplay, EffectCreative } from 'swiper/modules'
-import 'swiper/css'
-import 'swiper/css/effect-creative'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-const page = usePage()
-const swiperContainer = ref(null)
-
-const __t = (key) => {
-    const translations = page.props.translations || {}
-    return key.split(".").reduce((obj, part) => obj && obj[part], translations) || key
-}
+const slider = ref(null)
+const interval = ref(null)
 
 const slides = ref([
     {
         id: 1,
-        image: '/assets/images/wisata/pantai-krui.jpg',
-        alt: 'Pantai Krui',
+        title: 'Pantai Gigi Hiu',
+        description: 'Pantai Gigi Hiu, lanskap liar dengan deretan batu tajam menjulang seperti taring raksasa, menyajikan keindahan alam yang eksotis dan belum tersentuh. Tempat yang sempurna bagi pencari ketenangan, fotografer petualang, dan penikmat panorama luar biasa.',
+        image: '/assets/images/wisata/pantai-gigi-hiu.jpg',
     },
     {
         id: 2,
+        title: 'Pantai Tanjung Setia Krui',
+        description: 'Terkenal di kalangan peselancar dunia, Pantai Tanjung Setia menyuguhkan ombak raksasa, pasir putih yang lembut, dan suasana tenang yang jauh dari keramaian. Surga tropis bagi pencinta laut, petualang, dan pencari momen sempurna.',
         image: '/assets/images/wisata/pantai-krui-2.jpg',
-        alt: 'Pantai Krui Surfing',
     },
     {
         id: 3,
-        image: '/assets/images/wisata/pantai-gigi-hiu.jpg',
-        alt: 'Pantai Gigi Hiu',
+        title: 'Pantai Mutun Pesawaran',
+        description: 'Dengan air laut yang tenang, pasir putih, dan akses mudah dari pusat kota, Pantai Mutun jadi pilihan ideal untuk liburan santai bersama keluarga. Lengkap dengan wahana air, kuliner laut, dan panorama tropis yang memikat.',
+        image: '/assets/images/wisata/pantai-mutun.jpg',
+    },
+    {
+        id: 4,
+        title: 'Pantai Labuhan Jukung Krui',
+        description: 'Terkenal dengan garis pantai yang panjang dan matahari terbenam yang memukau, Labuhan Jukung jadi destinasi favorit wisatawan yang ingin bersantai, bermain ombak, atau sekadar menikmati keindahan sore di tepi Samudra Hindia.',
+        image: '/assets/images/wisata/pantai-krui.jpg',
+    },
+    {
+        id: 5,
+        title: 'Pantai Marina Kalianda',
+        description: 'Pantai Marina menawarkan suasana tropis yang segar dengan fasilitas kekinian, cocok untuk piknik keluarga, nongkrong santai, atau berburu foto Instagramable di tepi laut. Akses mudah, pemandangan memukau, dan kenyamanan yang bikin betah.',
+        image: '/assets/images/wisata/pantai-marina.jpg',
+    },
+    {
+        id: 6,
+        title: 'Pulau Pahawang',
+        description: 'Air sebening kaca, terumbu karang warna-warni, dan hamparan pasir putih membuat Pulau Pahawang jadi primadona snorkeling di Lampung. Tempat sempurna untuk melarikan diri dari hiruk pikuk dan tenggelam dalam keindahan laut tropis.',
+        image: '/assets/images/wisata/pulau-pahawang.webp',
     },
 ])
 
-onMounted(() => {
-    if (swiperContainer.value) {
-        new Swiper(swiperContainer.value, {
-            modules: [Pagination, Autoplay, EffectCreative],
-            loop: true,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            speed: 1000,
-            effect: 'creative',
-            creativeEffect: {
-                prev: {
-                    translate: ['-100%', 0, 0],
-                },
-                next: {
-                    translate: [100, 0, -1],
-                },
-            },
-            slidesPerView: 1
-        });
+function next() {
+    const items = slider.value.querySelectorAll('.item')
+    if (items.length) {
+        slider.value.appendChild(items[0])
     }
+}
+
+function prev() {
+    const items = slider.value.querySelectorAll('.item')
+    if (items.length) {
+        slider.value.prepend(items[items.length - 1])
+    }
+}
+
+onMounted(() => {
+    // Auto play setiap 5 detik
+    interval.value = setInterval(() => {
+        next()
+    }, 5000)
+})
+
+onBeforeUnmount(() => {
+    // Clear interval saat komponen di-unmount
+    clearInterval(interval.value)
 })
 </script>
 
-<style>
-.super-flow-content {
-    transform: translate(0%, 0px) scale(1.0);
+<template>
+    <section class="hero-section h-screen relative overflow-hidden">
+        <ul ref="slider" class="slider w-full h-full relative">
+            <li v-for="slide in slides" :key="slide.id"
+                class="item absolute bg-center bg-cover rounded-lg shadow-lg text-white transition-all duration-700 ease-in-out"
+                :style="{ backgroundImage: `url(${slide.image})` }">
+                <div class="overlay"></div>
+                <div class="content absolute text-white drop-shadow-md left-4 md:left-6 lg:left-8 xl:left-44">
+                    <h2 class="title text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-bold leading-tight">{{ slide.title }}</h2>
+                    <p class="description text-sm md:text-base xl:text-lg my-4 leading-relaxed">{{ slide.description }}</p>
+                </div>
+            </li>
+        </ul>
+
+        <!-- Navigasi -->
+        <nav class="nav absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-4">
+            <button @click="prev" class="w-10 h-10 rounded-full bg-white text-primary-600 hover:bg-white/80 flex items-center justify-center transition-all duration-300"><i class="ti ti-chevron-left text-xl"></i></button>
+            <button @click="next" class="w-10 h-10 rounded-full bg-white text-primary-600 hover:bg-white/80 flex items-center justify-center transition-all duration-300"><i class="ti ti-chevron-right text-xl"></i></button>
+        </nav>
+    </section>
+</template>
+
+<style scoped>
+.item {
+    width: 200px;
+    height: 300px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-size: cover;
+    transition: transform 0.1s, left 0.75s, top 0.75s, width 0.75s, height 0.75s;
+    z-index: 1;
 }
 
-.super-flow-image {
+.overlay {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    transition: all 6000ms linear;
-    transform: scale(1.1) translate(0%, 0px);
-    clip-path: polygon(0% 0%, 100% 0%, 95.8615% 100%, 0% 100%);
+    inset: 0;
+    z-index: 0;
+    transition: background 0.5s ease;
 }
 
-.super-flow-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: all 6000ms linear;
+.item:nth-child(1) .overlay,
+.item:nth-child(2) .overlay {
+    background: rgba(0, 0, 0, 0.4);
 }
 
-.super-flow-fragments {
-    position: absolute;
-    top: 0;
+.item:nth-child(1),
+.item:nth-child(2) {
     left: 0;
-    width: 100%;
-    height: 100%;
-    transition: all 6000ms linear;
-    transform: scale(0.95) translate(5%, 0px);
-}
-
-.super-flow-fragment {
-    position: absolute;
     top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: all 6000ms linear;
-}
-
-.super-flow-fragment-border {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #ffffff40;
-    transition: all 6000ms linear;
-}
-
-/* Fragment styles for left side */
-.fragment-1 {
-    clip-path: polygon(0% 0%, 21.5117% 0%, 8.61825% 100%, 0% 100%);
-    transform: translate(0px, 0px) scale(1.0);
-}
-
-.fragment-1-border {
-    clip-path: polygon(0% 0%, 21.5117% 0%, 8.61825% 100%, 0% 100%);
-    transform: translate(2px, 0px) scale(1.0);
-}
-
-.fragment-2 {
-    clip-path: polygon(0% 0%, 8.7936% 0%, 18.8873% 100%, 0% 100%);
-    transform: translate(0px, 0px) scale(1.15);
-}
-
-.fragment-2-border {
-    clip-path: polygon(0% 0%, 8.7936% 0%, 18.8873% 100%, 0% 100%);
-    transform: translate(2px, 0px) scale(1.15);
-}
-
-.fragment-3 {
-    clip-path: polygon(0% 0%, 16.5847% 0%, 7.16057% 100%, 0% 100%);
-    transform: translate(0px, 0px) scale(1.2);
-}
-
-.fragment-3-border {
-    clip-path: polygon(0% 0%, 16.5847% 0%, 7.16057% 100%, 0% 100%);
-    transform: translate(2px, 0px) scale(1.2);
-}
-
-/* Fragment styles for right side */
-.fragment-4 {
-    clip-path: polygon(100% 0%, 92.729% 0%, 75.1973% 100%, 100% 100%);
-    transform: translate(0px, 0px) scale(1.0);
-}
-
-.fragment-4-border {
-    clip-path: polygon(100% 0%, 92.729% 0%, 75.1973% 100%, 100% 100%);
-    transform: translate(-2px, 0px) scale(1.0);
-}
-
-.fragment-5 {
-    clip-path: polygon(100% 0%, 85.0484% 0%, 91.1183% 100%, 100% 100%);
-    transform: translate(0px, 0px) scale(1.15);
-}
-
-.fragment-5-border {
-    clip-path: polygon(100% 0%, 85.0484% 0%, 91.1183% 100%, 100% 100%);
-    transform: translate(-2px, 0px) scale(1.15);
-}
-
-.fragment-6 {
-    clip-path: polygon(100% 0%, 98.3906% 0%, 74.4343% 100%, 100% 100%);
-    transform: translate(0px, 0px) scale(1.25);
-}
-
-.fragment-6-border {
-    clip-path: polygon(100% 0%, 98.3906% 0%, 74.4343% 100%, 100% 100%);
-    transform: translate(-2px, 0px) scale(1.25);
-}
-
-/* Active slide animations */
-.hero-section .swiper-slide-active .super-flow-image {
-    transform: scale(1.2) translate(0%, 0px);
-    clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 0% 100%);
-}
-
-.hero-section .swiper-slide-active .super-flow-fragments {
-    transform: scale(1.0) translate(0%, 0px);
-}
-
-.hero-section .swiper-slide-active .super-flow-content {
-    transform: translate(0%, 0px) scale(1.3);
-}
-
-/* Fragment gambar */
-.hero-section .swiper-slide-active .fragment-1 {
-    transform: translate(0px, 0px) scale(1.1);
-}
-.hero-section .swiper-slide-active .fragment-2 {
-    transform: translate(0px, 0px) scale(1.25);
-}
-.hero-section .swiper-slide-active .fragment-3 {
-    transform: translate(0px, 0px) scale(1.3);
-}
-.hero-section .swiper-slide-active .fragment-4 {
-    transform: translate(0px, 0px) scale(1.1);
-}
-.hero-section .swiper-slide-active .fragment-5 {
-    transform: translate(0px, 0px) scale(1.25);
-}
-.hero-section .swiper-slide-active .fragment-6 {
-    transform: translate(0px, 0px) scale(1.35);
-}
-
-/* Fragment border */
-.hero-section .swiper-slide-active .fragment-1-border {
-    transform: translate(2px, 0px) scale(1.1);
-}
-.hero-section .swiper-slide-active .fragment-2-border {
-    transform: translate(2px, 0px) scale(1.25);
-}
-.hero-section .swiper-slide-active .fragment-3-border {
-    transform: translate(2px, 0px) scale(1.3);
-}
-.hero-section .swiper-slide-active .fragment-4-border {
-    transform: translate(-2px, 0px) scale(1.1);
-}
-.hero-section .swiper-slide-active .fragment-5-border {
-    transform: translate(-2px, 0px) scale(1.25);
-}
-.hero-section .swiper-slide-active .fragment-6-border {
-    transform: translate(-2px, 0px) scale(1.35);
-}
-
-
-/* Pagination styles */
-.hero-section .swiper-pagination {
-    bottom: 50px;
-    width: auto;
-    left: 50%;
-    transform: translate(-50%);
-    padding: 8px 14px;
-    background: #c8c8c840;
-    border-radius: 999px;
-    backdrop-filter: blur(16px);
-    white-space: nowrap;
-}
-
-.hero-section .swiper-pagination-bullet {
-    width: 8px;
-    height: 8px;
-    background: rgba(255, 255, 255, 0.5);
+    transform: none;
+    border-radius: 0;
+    box-shadow: none;
     opacity: 1;
 }
 
-.hero-section .swiper-pagination-bullet-active {
-    background: white;
-    transform: scale(1.2);
+.item:nth-child(3) {
+    left: 50%;
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-    .hero-section .swiper-pagination {
-        padding: 8px;
+.item:nth-child(4) {
+    left: calc(50% + 220px);
+}
+
+.item:nth-child(5) {
+    left: calc(50% + 440px);
+}
+
+.item:nth-child(6) {
+    left: calc(50% + 660px);
+    opacity: 0;
+}
+
+.content {
+    width: min(30vw, 500px);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    display: none;
+    animation: show 0.9s ease-in-out 0.3s forwards;
+}
+
+.item:nth-of-type(2) .content {
+    display: block;
+}
+
+@keyframes show {
+    0% {
+        filter: blur(5px);
+        transform: translateY(calc(-50% + 75px));
     }
 
-    .hero-section .swiper-pagination-bullet {
-        width: 8px;
-        height: 8px;
+    100% {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+@media (width > 650px) and (width < 900px) {
+    .item {
+        width: 160px;
+        height: 270px;
+    }
+
+    .item:nth-child(3) {
+        left: 50%;
+    }
+
+    .item:nth-child(4) {
+        left: calc(50% + 170px);
+    }
+
+    .item:nth-child(5) {
+        left: calc(50% + 340px);
+    }
+
+    .item:nth-child(6) {
+        left: calc(50% + 510px);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 650px) {
+    .item {
+        width: 130px;
+        height: 170px;
+        transform: translateY(0);
+        top: 58%;
+    }
+
+    .content {
+        width: 100%;
+        top: 36%;
+        left: 0;
+        padding: 0 30px;
+        text-align: center;
+    }
+
+    .item:nth-child(3) {
+        left: 33%;
+    }
+
+    .item:nth-child(4) {
+        left: calc(33% + 140px);
+    }
+
+    .item:nth-child(5) {
+        left: calc(33% + 280px);
+    }
+
+    .item:nth-child(6) {
+        left: calc(33% + 420px);
+        opacity: 0;
     }
 }
 </style>

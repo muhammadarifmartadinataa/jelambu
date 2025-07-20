@@ -1,2 +1,21 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap
+Sitemap: https://jelambu.kangkoding.com/sitemap.xml
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /filament/
+Disallow: /telescope/
+
+# Disallow API endpoints
+Disallow: /api/
+
+# Allow important pages
+Allow: /
+Allow: /wisata
+Allow: /kabupaten
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1

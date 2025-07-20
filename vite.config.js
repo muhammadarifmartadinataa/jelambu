@@ -6,6 +6,7 @@ export default defineConfig({
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/filament/admin/theme.css'],
+            ssr: 'resources/js/ssr.js',
             refresh: [
                 ...refreshPaths,
                 'app/Filament/**',
@@ -29,5 +30,8 @@ export default defineConfig({
         alias: {
             '@': '/resources/js',
         },
+    },
+    ssr: {
+        noExternal: ['vue-select'],
     },
 })

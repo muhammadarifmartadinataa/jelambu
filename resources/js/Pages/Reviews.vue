@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const props = defineProps({
     currentLang: String,
-    destinations: Object
+    destinations: Object,
 })
 
 const page = usePage()
@@ -85,7 +85,7 @@ onBeforeUnmount(() => {
 
 <template>
     <AppLayout :current-lang="currentLang">
-        <Head :title="__t('nav.regencies')" />
+        <Head :title="__t('nav.reviews')" />
 
         <!-- Hero Section -->
         <section class="bg-primary-600 text-white py-16 relative overflow-hidden mt-20">
@@ -150,63 +150,63 @@ onBeforeUnmount(() => {
         
         <section class="py-12 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div v-if="comments.length === 0" class="text-center py-12">
+                <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-white shadow-sm rounded-lg p-4">
+                        <div class="animate-pulse flex space-x-4">
+                            <div class="rounded-full bg-slate-300 h-10 w-10"></div>
+                            <div class="flex-1 space-y-6 py-1">
+                                <div class="h-2 bg-slate-300 rounded w-28"></div>
+                                <div class="space-y-3">
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <div class="h-2 bg-slate-300 rounded col-span-2"></div>
+                                        <div class="h-2 bg-slate-300 rounded col-span-1"></div>
+                                    </div>
+                                    <div class="h-2 bg-slate-300 rounded"></div>
+                                </div>
+                                <div class="h-2 bg-slate-300 rounded w-40"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white shadow-sm rounded-lg p-4">
+                        <div class="animate-pulse flex space-x-4">
+                            <div class="rounded-full bg-slate-300 h-10 w-10"></div>
+                            <div class="flex-1 space-y-6 py-1">
+                                <div class="h-2 bg-slate-300 rounded w-28"></div>
+                                <div class="space-y-3">
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <div class="h-2 bg-slate-300 rounded col-span-2"></div>
+                                        <div class="h-2 bg-slate-300 rounded col-span-1"></div>
+                                    </div>
+                                    <div class="h-2 bg-slate-300 rounded"></div>
+                                </div>
+                                <div class="h-2 bg-slate-300 rounded w-40"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white shadow-sm rounded-lg p-4">
+                        <div class="animate-pulse flex space-x-4">
+                            <div class="rounded-full bg-slate-300 h-10 w-10"></div>
+                            <div class="flex-1 space-y-6 py-1">
+                                <div class="h-2 bg-slate-300 rounded w-28"></div>
+                                <div class="space-y-3">
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <div class="h-2 bg-slate-300 rounded col-span-2"></div>
+                                        <div class="h-2 bg-slate-300 rounded col-span-1"></div>
+                                    </div>
+                                    <div class="h-2 bg-slate-300 rounded"></div>
+                                </div>
+                                <div class="h-2 bg-slate-300 rounded w-40"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-else-if="comments.length === 0" class="text-center py-12">
                     <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="ti ti-search text-gray-400 text-3xl"></i>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ __t('reviews.not_found.title') }}</h3>
                     <p class="text-gray-600">{{ __t('reviews.not_found.description') }}</p>
-                </div>
-
-                <div v-else-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="bg-white shadow-sm rounded-lg p-4">
-                        <div class="animate-pulse flex space-x-4">
-                            <div class="rounded-full bg-slate-300 h-10 w-10"></div>
-                            <div class="flex-1 space-y-6 py-1">
-                                <div class="h-2 bg-slate-300 rounded w-28"></div>
-                                <div class="space-y-3">
-                                    <div class="grid grid-cols-3 gap-4">
-                                        <div class="h-2 bg-slate-300 rounded col-span-2"></div>
-                                        <div class="h-2 bg-slate-300 rounded col-span-1"></div>
-                                    </div>
-                                    <div class="h-2 bg-slate-300 rounded"></div>
-                                </div>
-                                <div class="h-2 bg-slate-300 rounded w-40"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white shadow-sm rounded-lg p-4">
-                        <div class="animate-pulse flex space-x-4">
-                            <div class="rounded-full bg-slate-300 h-10 w-10"></div>
-                            <div class="flex-1 space-y-6 py-1">
-                                <div class="h-2 bg-slate-300 rounded w-28"></div>
-                                <div class="space-y-3">
-                                    <div class="grid grid-cols-3 gap-4">
-                                        <div class="h-2 bg-slate-300 rounded col-span-2"></div>
-                                        <div class="h-2 bg-slate-300 rounded col-span-1"></div>
-                                    </div>
-                                    <div class="h-2 bg-slate-300 rounded"></div>
-                                </div>
-                                <div class="h-2 bg-slate-300 rounded w-40"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white shadow-sm rounded-lg p-4">
-                        <div class="animate-pulse flex space-x-4">
-                            <div class="rounded-full bg-slate-300 h-10 w-10"></div>
-                            <div class="flex-1 space-y-6 py-1">
-                                <div class="h-2 bg-slate-300 rounded w-28"></div>
-                                <div class="space-y-3">
-                                    <div class="grid grid-cols-3 gap-4">
-                                        <div class="h-2 bg-slate-300 rounded col-span-2"></div>
-                                        <div class="h-2 bg-slate-300 rounded col-span-1"></div>
-                                    </div>
-                                    <div class="h-2 bg-slate-300 rounded"></div>
-                                </div>
-                                <div class="h-2 bg-slate-300 rounded w-40"></div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div v-else>

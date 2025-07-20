@@ -2,7 +2,7 @@
 import { Head, Link, usePage } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { nextTick, onMounted, ref, watch } from 'vue'
-import L from 'leaflet'
+
 import 'leaflet/dist/leaflet.css'
 
 const props = defineProps({
@@ -53,6 +53,8 @@ const __t = (key) => {
 }
 
 const currentUrl = ref('')
+const map = ref(null)
+const mapContainer = ref(null)
 
 onMounted(() => {
     currentUrl.value = window.location.href
@@ -65,16 +67,24 @@ onMounted(() => {
     })
 })
 
-const map = ref(null)
-const mapContainer = ref(null)
-
-watch(activeTab, (val) => {
+watch(activeTab, async (val) => {
     if (val === 'maps') {
-        nextTick(() => {
+        nextTick(async () => {
             if (map.value) {
                 map.value.invalidateSize()
             } else {
+                const L = await import('leaflet')
+
+                // Set marker icons (karena Vite butuh ini biar URL-nya resolve)
+                delete L.Icon.Default.prototype._getIconUrl
+                L.Icon.Default.mergeOptions({
+                    iconRetinaUrl: new URL('leaflet/dist/images/marker-icon-2x.png', import.meta.url).href,
+                    iconUrl: new URL('leaflet/dist/images/marker-icon.png', import.meta.url).href,
+                    shadowUrl: new URL('leaflet/dist/images/marker-shadow.png', import.meta.url).href,
+                })
+
                 map.value = L.map(mapContainer.value).setView([props.wisata.latitude, props.wisata.longitude], 14)
+
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; OpenStreetMap contributors'
                 }).addTo(map.value)
@@ -190,7 +200,7 @@ watch(activeTab, (val) => {
                                                     <i class="ti ti-building text-primary-600 text-2xl"></i>
                                                     <div>
                                                         <p class="text-sm text-gray-500">{{ __t('detail.regency') }}</p>
-                                                        <p class="font-medium">{{ wisata.kabupaten?.nama_kabupaten }}</p>
+                                                        <p class="font-medium text-sm">{{ wisata.kabupaten?.nama_kabupaten }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center space-x-3">

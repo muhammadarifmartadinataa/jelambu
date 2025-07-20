@@ -13,7 +13,7 @@ const props = defineProps({
     kabupatens: Array,
     wisatas: Array,
     currentLang: String,
-    destinations: Array
+    destinations: Array,
 })
 
 const page = usePage()

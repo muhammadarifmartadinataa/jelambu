@@ -4,6 +4,7 @@ use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\KabupatenController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\WisataController;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
@@ -21,3 +22,9 @@ RateLimiter::for('chatbot', function ($request) {
     return Limit::perMinute(3)->by($request->ip());
 });
 Route::middleware('throttle:chatbot')->post('/chatbot/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat');
+
+// Sitemap routes
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
+Route::get('/sitemap-main.xml', [SitemapController::class, 'main'])->name('sitemap.main');
+Route::get('/sitemap-wisata.xml', [SitemapController::class, 'wisata'])->name('sitemap.wisata');
+Route::get('/sitemap-kabupaten.xml', [SitemapController::class, 'kabupaten'])->name('sitemap.kabupaten');
