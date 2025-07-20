@@ -114,7 +114,7 @@ watch(activeTab, async (val) => {
             <div class="absolute inset-0 flex items-end">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 w-full">
                     <div class="text-white">
-                        <div class="flex items-center text-sm mb-2">
+                        <div class="flex items-center text-nowrap text-sm mb-2">
                             <Link :href="route('beranda')" class="hover:text-yellow-300 transition-colors duration-200">
                                 {{ __t('nav.home') }}
                             </Link>
@@ -314,7 +314,7 @@ watch(activeTab, async (val) => {
 
                                 <!-- Interactive Map Placeholder -->
                                 <div class="w-full h-80 rounded-lg overflow-hidden mb-4 z-0">
-                                    <div id="destination-map" ref="mapContainer" class="w-full h-full"></div>
+                                    <div id="destination-map" ref="mapContainer" class="w-full h-full z-10"></div>
                                 </div>
                                 <div class="bg-gray-100 rounded-lg p-8 text-center">
                                     <p class="text-sm text-gray-400 mb-4">
@@ -438,7 +438,7 @@ watch(activeTab, async (val) => {
         </section>
 
         <!-- Floating Chatbot -->
-        <div class="fixed bottom-6 right-6 z-50">
+        <div class="fixed bottom-6 right-6 z-40">
             <Link 
                 :href="route('chatbot')"
                 class="w-14 h-14 bg-white text-white rounded-full flex items-center justify-center shadow-lg ring-4 ring-primary-600 transition-all duration-300 transform hover:scale-110"

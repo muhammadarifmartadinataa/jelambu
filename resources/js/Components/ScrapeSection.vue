@@ -135,7 +135,7 @@ onBeforeUnmount(() => {
                             </li>
                         </ul>
                     </div>
-                    <button @click="telusuriKomentar" class="text-nowrap flex items-center bg-primary-600 text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-700 transition duration-200">
+                    <button @click="telusuriKomentar" class="justify-center text-nowrap flex items-center bg-primary-600 text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-700 transition duration-200">
                         <i class="ti ti-search mr-2"></i> {{ __t('home.scrape.button') }}
                     </button>
                 </div>
