@@ -39,6 +39,7 @@ class UserResource extends Resource
                                     ->label('Alamat Email')
                                     ->required(fn (string $context) => $context === 'create')
                                     ->disabled(fn (string $context) => $context === 'edit')
+                                    ->dehydrated(fn (string $context) => $context === 'create')
                                     ->maxLength(255)
                                     ->email()
                                     ->rules(['ends_with:@jelambu.com'])
