@@ -37,12 +37,11 @@ class UserResource extends Resource
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('email')
                                     ->label('Alamat Email')
-                                    ->required()
+                                    ->required(fn (string $context) => $context === 'create')
+                                    ->disabled(fn (string $context) => $context === 'edit')
                                     ->maxLength(255)
-                                    ->formatStateUsing(fn ($state) => str_replace('@jelambu.com', '', $state))
-                                    ->suffix('@jelambu.com')
-                                    ->dehydrateStateUsing(fn ($state) => $state . '@jelambu.com')
-                                    ->unique(ignoreRecord: true)
+                                    ->email()
+                                    ->rules(['ends_with:@jelambu.com'])
                             ]),
                         Forms\Components\TextInput::make('password')
                             ->password()
