@@ -39,9 +39,7 @@ class UserResource extends Resource
                                     ->label('Alamat Email')
                                     ->required()
                                     ->maxLength(255)
-                                    ->afterStateHydrated(function ($component, $state) {
-                                        $component->state(str_replace('@jelambu.com', '', $state));
-                                    })
+                                    ->formatStateUsing(fn ($state) => str_replace('@jelambu.com', '', $state))
                                     ->suffix('@jelambu.com')
                                     ->dehydrateStateUsing(fn ($state) => $state . '@jelambu.com')
                                     ->unique(ignoreRecord: true)
