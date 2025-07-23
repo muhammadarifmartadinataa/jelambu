@@ -57,6 +57,9 @@ const telusuriKomentar = async () => {
     if (selectedWisata.value) {
         try {
             isLoading.value = true
+            errorMessage.value = null
+            comments.value = []
+            summary.value = null
 
             const response = await axios.post('/reviews/search-comments', { query: selectedWisata.value })
             comments.value = response.data.tweets
@@ -91,6 +94,7 @@ const clearSearch = () => {
   comments.value = []
   summary.value = null
   showDropdown.value = true
+  errorMessage.value = null
 }
 </script>
 
@@ -225,8 +229,14 @@ const clearSearch = () => {
                     <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="ti ti-search text-gray-400 text-3xl"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ __t('reviews.not_found.title') }}</h3>
-                    <p class="text-gray-600">{{ __t('reviews.not_found.description') }}</p>
+                    <div v-if="errorMessage">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Maaf, Terjadi Kesalahan</h3>
+                        <p class="text-gray-600">{{ errorMessage }}</p>
+                    </div>
+                    <div v-else>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ __t('reviews.not_found.title') }}</h3>
+                        <p class="text-gray-600">{{ __t('reviews.not_found.description') }}</p>
+                    </div>
                 </div>
 
                 <div v-else>
