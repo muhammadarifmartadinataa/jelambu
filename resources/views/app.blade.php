@@ -7,6 +7,9 @@
         <!-- Dynamic Title -->
         <title inertia>{{ $page['props']['meta']['title'] ?? config('app.name') }}</title>
 
+        <!-- Google Site Verification -->
+        <meta name="google-site-verification" content="Nhf7M2aq2p-r4wMOF3AByrJlChPH8bSqvBdpdHOpVeI" />
+
         <!-- Basic Meta Tags -->
         <meta name="description" content="{{ $page['props']['meta']['description'] ?? 'Temukan keindahan wisata biru Lampung yang menakjubkan. Dari pantai eksotis hingga laut yang memukau.' }}">
         <meta name="keywords" content="{{ $page['props']['meta']['keywords'] ?? '' }}">
