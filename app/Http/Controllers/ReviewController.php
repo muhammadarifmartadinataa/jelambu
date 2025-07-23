@@ -67,10 +67,13 @@ class ReviewController extends Controller
             ]);
         }
 
+        $contextualKeywords = 'lampung (wisata OR pantai OR laut OR danau OR "air terjun")';
+        $finalQuery = "({$query}) {$contextualKeywords}";
+
         $response = Http::withHeaders([
             'x-api-key' => env('SEKAREP_API_KEY'),
         ])->post(env('SEKAREP_API_URL'), [
-            'query' => $query
+            'query' => $finalQuery
         ]);
 
         if ($response->failed()) {
@@ -114,8 +117,8 @@ class ReviewController extends Controller
 
         $summary = $geminiResponse['candidates'][0]['content']['parts'][0]['text'] ?? 'Maaf, tidak bisa memberikan kesimpulan.';
 
-        Cache::put("tweets:{$query}", $tweets, now()->addMinutes(10));
-        Cache::put("summary:{$query}", $summary, now()->addMinutes(10));
+        Cache::put("tweets:{$query}", $tweets, now()->addDay());
+        Cache::put("summary:{$query}", $summary, now()->addDay());
 
         return response()->json([
             'tweets' => $tweets,
