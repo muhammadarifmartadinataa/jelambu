@@ -1,5 +1,5 @@
-import { ref, onMounted, onUnmounted, mergeProps, unref, withCtx, createVNode, createTextVNode, toDisplayString, useSSRContext, computed, onBeforeUnmount, watch, nextTick, createBlock, createCommentVNode, openBlock, Fragment, renderList, withDirectives, withKeys, vModelText, vShow, vModelSelect, resolveDirective, createElementBlock, normalizeClass, renderSlot, createElementVNode, normalizeProps, guardReactiveProps, resolveDynamicComponent, toHandlers, Transition, withModifiers, createSSRApp, h as h$1 } from "vue";
-import { ssrRenderAttrs, ssrRenderComponent, ssrInterpolate, ssrRenderStyle, ssrRenderClass, ssrRenderSlot, ssrRenderList, ssrRenderAttr, ssrIncludeBooleanAttr, ssrLooseContain, ssrLooseEqual } from "vue/server-renderer";
+import { ref, computed, onMounted, onUnmounted, mergeProps, unref, withCtx, createVNode, createTextVNode, toDisplayString, useSSRContext, onBeforeUnmount, watch, nextTick, createBlock, createCommentVNode, openBlock, Fragment, renderList, withDirectives, withKeys, vModelText, vShow, vModelSelect, resolveDirective, createElementBlock, normalizeClass, renderSlot, createElementVNode, normalizeProps, guardReactiveProps, resolveDynamicComponent, toHandlers, Transition, withModifiers, createSSRApp, h as h$1 } from "vue";
+import { ssrRenderAttrs, ssrRenderClass, ssrRenderComponent, ssrRenderAttr, ssrRenderList, ssrInterpolate, ssrRenderStyle, ssrRenderSlot, ssrIncludeBooleanAttr, ssrLooseContain, ssrLooseEqual } from "vue/server-renderer";
 import { usePage, Link, Head, createInertiaApp } from "@inertiajs/vue3";
 import { Swiper } from "swiper";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
@@ -20,6 +20,16 @@ const _sfc_main$d = {
     const showLanguageDropdown = ref(false);
     const languageDropdown = ref(null);
     const page = usePage();
+    const isScrolled = ref(false);
+    const currentRoute = computed(() => usePage().url);
+    const isHomePage = computed(() => currentRoute.value === "/");
+    const navItems = [
+      { label: "nav.home", route: "beranda", components: ["Beranda"] },
+      { label: "nav.regencies", route: "kabupaten", components: ["Kabupaten"] },
+      { label: "nav.destinations", route: "wisata", components: ["Wisata/Index", "Wisata/Show"] },
+      { label: "nav.chatbot", route: "chatbot", components: ["Chatbot"] },
+      { label: "nav.reviews", route: "reviews", components: ["Reviews"] }
+    ];
     const __t = (key) => {
       const translations = page.props.translations || {};
       return key.split(".").reduce((obj, part) => obj && obj[part], translations) || key;
@@ -29,190 +39,94 @@ const _sfc_main$d = {
         showLanguageDropdown.value = false;
       }
     };
+    const handleScroll = () => {
+      if (!isHomePage.value) return;
+      isScrolled.value = window.scrollY > 10;
+    };
+    const isActive = (components) => components.includes(page.component);
+    const navClass = (active) => {
+      if (active) return "text-primary-600";
+      return isScrolled.value ? "text-gray-700 hover:text-primary-600" : "text-white hover:text-primary-600";
+    };
     onMounted(() => {
       document.addEventListener("click", handleClickOutside);
+      if (isHomePage.value) {
+        window.addEventListener("scroll", handleScroll);
+      } else {
+        isScrolled.value = true;
+      }
     });
     onUnmounted(() => {
       document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("scroll", handleScroll);
     });
     return (_ctx, _push, _parent, _attrs) => {
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-gray-50 font-sans" }, _attrs))}><nav class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200/50 shadow-sm"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex justify-between items-center h-20">`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-gray-50 font-sans" }, _attrs))}><nav class="${ssrRenderClass([
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        isScrolled.value ? "bg-white shadow-md" : "bg-transparent backdrop-blur-sm"
+      ])}"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex justify-between items-center h-20">`);
       _push(ssrRenderComponent(unref(Link), {
         href: _ctx.route("beranda")
       }, {
         default: withCtx((_, _push2, _parent2, _scopeId) => {
           if (_push2) {
-            _push2(`<img src="/assets/images/logo/logo-jelambu.svg" alt="Jelambu" class="h-16"${_scopeId}>`);
+            _push2(`<img${ssrRenderAttr("src", isScrolled.value ? "/assets/images/logo/logo-jelambu.svg" : "/assets/images/logo/logo-jelambu-light.svg")} alt="Jelambu" class="h-16"${_scopeId}>`);
           } else {
             return [
               createVNode("img", {
-                src: "/assets/images/logo/logo-jelambu.svg",
+                src: isScrolled.value ? "/assets/images/logo/logo-jelambu.svg" : "/assets/images/logo/logo-jelambu-light.svg",
                 alt: "Jelambu",
                 class: "h-16"
-              })
+              }, null, 8, ["src"])
             ];
           }
         }),
         _: 1
       }, _parent));
-      _push(`<div class="hidden md:flex items-center space-x-8">`);
-      _push(ssrRenderComponent(unref(Link), {
-        href: _ctx.route("beranda"),
-        class: ["text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200", { "text-primary-600": _ctx.$page.component === "Beranda" }]
-      }, {
-        default: withCtx((_, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`${ssrInterpolate(__t("nav.home"))}`);
-          } else {
-            return [
-              createTextVNode(toDisplayString(__t("nav.home")), 1)
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(ssrRenderComponent(unref(Link), {
-        href: _ctx.route("kabupaten"),
-        class: ["text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200", { "text-primary-600": _ctx.$page.component === "Kabupaten" }]
-      }, {
-        default: withCtx((_, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`${ssrInterpolate(__t("nav.regencies"))}`);
-          } else {
-            return [
-              createTextVNode(toDisplayString(__t("nav.regencies")), 1)
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(ssrRenderComponent(unref(Link), {
-        href: _ctx.route("wisata"),
-        class: ["text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200", { "text-primary-600": _ctx.$page.component === "Wisata/Index" || _ctx.$page.component === "Wisata/Show" }]
-      }, {
-        default: withCtx((_, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`${ssrInterpolate(__t("nav.destinations"))}`);
-          } else {
-            return [
-              createTextVNode(toDisplayString(__t("nav.destinations")), 1)
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(ssrRenderComponent(unref(Link), {
-        href: _ctx.route("chatbot"),
-        class: ["text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200", { "text-primary-600": _ctx.$page.component === "Chatbot" }]
-      }, {
-        default: withCtx((_, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`${ssrInterpolate(__t("nav.chatbot"))}`);
-          } else {
-            return [
-              createTextVNode(toDisplayString(__t("nav.chatbot")), 1)
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(ssrRenderComponent(unref(Link), {
-        href: _ctx.route("reviews"),
-        class: ["text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200", { "text-primary-600": _ctx.$page.component === "Reviews" }]
-      }, {
-        default: withCtx((_, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`${ssrInterpolate(__t("nav.reviews"))}`);
-          } else {
-            return [
-              createTextVNode(toDisplayString(__t("nav.reviews")), 1)
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(`</div><div class="flex items-center space-x-4"><div class="relative"><button class="flex items-center space-x-2 px-3 py-2 rounded-lg border border-gray-200 hover:border-primary-300 transition-colors duration-200"><span class="text-sm font-medium">${ssrInterpolate(__props.currentLang.toUpperCase())}</span><i class="ti ti-chevron-down text-sm"></i></button><div style="${ssrRenderStyle(showLanguageDropdown.value ? null : { display: "none" })}" class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50"><button class="${ssrRenderClass([{ "text-primary-600 bg-primary-50": __props.currentLang === "id" }, "w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors duration-200"])}"> 🇮🇩 Indonesia </button><button class="${ssrRenderClass([{ "text-primary-600 bg-primary-50": __props.currentLang === "en" }, "w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors duration-200"])}"> 🇺🇸 English </button></div></div><button class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"><i class="ti ti-menu-2 text-xl"></i></button></div></div><div style="${ssrRenderStyle(showMobileMenu.value ? null : { display: "none" })}" class="md:hidden py-4 border-t border-gray-200"><div class="space-y-2">`);
-      _push(ssrRenderComponent(unref(Link), {
-        href: _ctx.route("beranda"),
-        class: ["block px-4 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors duration-200", { "text-white bg-primary-600": _ctx.$page.component === "Beranda" }],
-        onClick: ($event) => showMobileMenu.value = false
-      }, {
-        default: withCtx((_, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`${ssrInterpolate(__t("nav.home"))}`);
-          } else {
-            return [
-              createTextVNode(toDisplayString(__t("nav.home")), 1)
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(ssrRenderComponent(unref(Link), {
-        href: _ctx.route("kabupaten"),
-        class: ["block px-4 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors duration-200", { "text-white bg-primary-600": _ctx.$page.component === "Kabupaten" }],
-        onClick: ($event) => showMobileMenu.value = false
-      }, {
-        default: withCtx((_, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`${ssrInterpolate(__t("nav.regencies"))}`);
-          } else {
-            return [
-              createTextVNode(toDisplayString(__t("nav.regencies")), 1)
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(ssrRenderComponent(unref(Link), {
-        href: _ctx.route("wisata"),
-        class: ["block px-4 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors duration-200", { "text-white bg-primary-600": _ctx.$page.component === "Wisata/Index" || _ctx.$page.component === "Wisata/Show" }],
-        onClick: ($event) => showMobileMenu.value = false
-      }, {
-        default: withCtx((_, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`${ssrInterpolate(__t("nav.destinations"))}`);
-          } else {
-            return [
-              createTextVNode(toDisplayString(__t("nav.destinations")), 1)
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(ssrRenderComponent(unref(Link), {
-        href: _ctx.route("chatbot"),
-        class: ["block px-4 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors duration-200", { "text-white bg-primary-600": _ctx.$page.component === "Chatbot" }],
-        onClick: ($event) => showMobileMenu.value = false
-      }, {
-        default: withCtx((_, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`${ssrInterpolate(__t("nav.chatbot"))}`);
-          } else {
-            return [
-              createTextVNode(toDisplayString(__t("nav.chatbot")), 1)
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(ssrRenderComponent(unref(Link), {
-        href: _ctx.route("reviews"),
-        class: ["block px-4 py-2 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors duration-200", { "text-white bg-primary-600": _ctx.$page.component === "Reviews" }],
-        onClick: ($event) => showMobileMenu.value = false
-      }, {
-        default: withCtx((_, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`${ssrInterpolate(__t("nav.reviews"))}`);
-          } else {
-            return [
-              createTextVNode(toDisplayString(__t("nav.reviews")), 1)
-            ];
-          }
-        }),
-        _: 1
-      }, _parent));
-      _push(`</div></div></div></nav><main>`);
+      _push(`<div class="hidden md:flex items-center space-x-8"><!--[-->`);
+      ssrRenderList(navItems, (item) => {
+        _push(ssrRenderComponent(unref(Link), {
+          key: item.route,
+          href: _ctx.route(item.route),
+          class: ["font-medium transition-colors duration-200", navClass(isActive(item.components))]
+        }, {
+          default: withCtx((_, _push2, _parent2, _scopeId) => {
+            if (_push2) {
+              _push2(`${ssrInterpolate(__t(item.label))}`);
+            } else {
+              return [
+                createTextVNode(toDisplayString(__t(item.label)), 1)
+              ];
+            }
+          }),
+          _: 2
+        }, _parent));
+      });
+      _push(`<!--]--></div><div class="flex items-center space-x-2"><div class="relative"><button class="${ssrRenderClass([[
+        isScrolled.value ? "border-gray-200 hover:border-primary-600" : "border-white hover:border-white/70"
+      ], "flex items-center space-x-2 px-3 py-2 rounded-lg border transition-colors duration-200"])}"><span class="${ssrRenderClass([isScrolled.value ? "text-gray-700" : "text-white", "text-sm font-medium"])}">${ssrInterpolate(__props.currentLang.toUpperCase())}</span><i class="${ssrRenderClass([isScrolled.value ? "text-gray-700" : "text-white", "ti ti-chevron-down text-sm"])}"></i></button><div style="${ssrRenderStyle(showLanguageDropdown.value ? null : { display: "none" })}" class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50"><button class="${ssrRenderClass([{ "text-primary-600 bg-primary-50": __props.currentLang === "id" }, "w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors duration-200"])}"> 🇮🇩 Indonesia </button><button class="${ssrRenderClass([{ "text-primary-600 bg-primary-50": __props.currentLang === "en" }, "w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors duration-200"])}"> 🇺🇸 English </button></div></div><button class="${ssrRenderClass([isScrolled.value ? "hover:bg-gray-100" : "hover:bg-white/20", "md:hidden py-1.5 px-3 rounded-lg transition-colors duration-200"])}"><i class="${ssrRenderClass([isScrolled.value ? "text-gray-700" : "text-white", "ti ti-menu-2 text-xl"])}"></i></button></div></div><div style="${ssrRenderStyle(showMobileMenu.value ? null : { display: "none" })}" class="md:hidden py-4 border-t border-gray-200"><div class="space-y-2"><!--[-->`);
+      ssrRenderList(navItems, (item) => {
+        _push(ssrRenderComponent(unref(Link), {
+          key: item.route,
+          href: _ctx.route(item.route),
+          class: ["block px-4 py-2 rounded-lg transition-colors duration-200", [
+            isActive(item.components) ? "text-white bg-primary-600" : isScrolled.value ? "text-gray-700 hover:text-primary-600 hover:bg-primary-50" : "text-white hover:text-primary-600 hover:bg-white/10"
+          ]],
+          onClick: ($event) => showMobileMenu.value = false
+        }, {
+          default: withCtx((_, _push2, _parent2, _scopeId) => {
+            if (_push2) {
+              _push2(`${ssrInterpolate(__t(item.label))}`);
+            } else {
+              return [
+                createTextVNode(toDisplayString(__t(item.label)), 1)
+              ];
+            }
+          }),
+          _: 2
+        }, _parent));
+      });
+      _push(`<!--]--></div></div></div></nav><main>`);
       ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
       _push(`</main><footer class="bg-gray-900 text-white"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"><div class="grid grid-cols-1 md:grid-cols-4 gap-8"><div class="md:col-span-2">`);
       _push(ssrRenderComponent(unref(Link), {
@@ -331,51 +245,66 @@ const _sfc_main$c = {
   __name: "HeroSection",
   __ssrInlineRender: true,
   setup(__props) {
-    ref(null);
+    const slider = ref(null);
+    const interval = ref(null);
     const slides = ref([
       {
         id: 1,
-        title: '"Lossless Youths"',
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-        image: "https://cdn.mos.cms.futurecdn.net/dP3N4qnEZ4tCTCLq59iysd.jpg"
+        title: "Pantai Gigi Hiu",
+        description: "Pantai Gigi Hiu, lanskap liar dengan deretan batu tajam menjulang seperti taring raksasa, menyajikan keindahan alam yang eksotis dan belum tersentuh. Tempat yang sempurna bagi pencari ketenangan, fotografer petualang, dan penikmat panorama luar biasa.",
+        image: "/assets/images/wisata/pantai-gigi-hiu.jpg"
       },
       {
         id: 2,
-        title: '"Estrange Bond"',
-        description: "Tempore fuga voluptatum, iure corporis inventore praesentium nisi.",
-        image: "https://i.redd.it/tc0aqpv92pn21.jpg"
+        title: "Pantai Tanjung Setia Krui",
+        description: "Terkenal di kalangan peselancar dunia, Pantai Tanjung Setia menyuguhkan ombak raksasa, pasir putih yang lembut, dan suasana tenang yang jauh dari keramaian. Surga tropis bagi pencinta laut, petualang, dan pencari momen sempurna.",
+        image: "/assets/images/wisata/pantai-krui-2.jpg"
       },
       {
         id: 3,
-        title: '"The Gate Keeper"',
-        description: "Id laboriosam ipsam enim. Tempore fuga voluptatum.",
-        image: "https://wharferj.files.wordpress.com/2015/11/bio_north.jpg"
+        title: "Pantai Mutun Pesawaran",
+        description: "Dengan air laut yang tenang, pasir putih, dan akses mudah dari pusat kota, Pantai Mutun jadi pilihan ideal untuk liburan santai bersama keluarga. Lengkap dengan wahana air, kuliner laut, dan panorama tropis yang memikat.",
+        image: "/assets/images/wisata/pantai-mutun.jpg"
       },
       {
         id: 4,
-        title: '"Last Trace Of Us"',
-        description: "Badan terasa ngambang. Lorem ipsum dolor sit amet.",
-        image: "https://images7.alphacoders.com/878/878663.jpg"
+        title: "Pantai Labuhan Jukung Krui",
+        description: "Terkenal dengan garis pantai yang panjang dan matahari terbenam yang memukau, Labuhan Jukung jadi destinasi favorit wisatawan yang ingin bersantai, bermain ombak, atau sekadar menikmati keindahan sore di tepi Samudra Hindia.",
+        image: "/assets/images/wisata/pantai-krui.jpg"
       },
       {
         id: 5,
-        title: '"Urban Decay"',
-        description: "Satu dua tiga empat lima enam tujuh delapan.",
-        image: "https://theawesomer.com/photos/2017/07/simon_stalenhag_the_electric_state_6.jpg"
+        title: "Pantai Marina Kalianda",
+        description: "Pantai Marina menawarkan suasana tropis yang segar dengan fasilitas kekinian, cocok untuk piknik keluarga, nongkrong santai, atau berburu foto Instagramable di tepi laut. Akses mudah, pemandangan memukau, dan kenyamanan yang bikin betah.",
+        image: "/assets/images/wisata/pantai-marina.jpg"
       },
       {
         id: 6,
-        title: '"The Migration"',
-        description: "Deskripsi terakhir, sangat sinematik dan estetik.",
-        image: "https://da.se/app/uploads/2015/09/simon-december1994.jpg"
+        title: "Pulau Pahawang",
+        description: "Air sebening kaca, terumbu karang warna-warni, dan hamparan pasir putih membuat Pulau Pahawang jadi primadona snorkeling di Lampung. Tempat sempurna untuk melarikan diri dari hiruk pikuk dan tenggelam dalam keindahan laut tropis.",
+        image: "/assets/images/wisata/pulau-pahawang.webp"
       }
     ]);
+    function next() {
+      const items = slider.value.querySelectorAll(".item");
+      if (items.length) {
+        slider.value.appendChild(items[0]);
+      }
+    }
+    onMounted(() => {
+      interval.value = setInterval(() => {
+        next();
+      }, 5e3);
+    });
+    onBeforeUnmount(() => {
+      clearInterval(interval.value);
+    });
     return (_ctx, _push, _parent, _attrs) => {
-      _push(`<section${ssrRenderAttrs(mergeProps({ class: "hero-section h-screen relative overflow-hidden" }, _attrs))} data-v-160f24b4><ul class="slider w-full h-full relative" data-v-160f24b4><!--[-->`);
+      _push(`<section${ssrRenderAttrs(mergeProps({ class: "hero-section h-screen relative overflow-hidden" }, _attrs))} data-v-650397ab><ul class="slider w-full h-full relative" data-v-650397ab><!--[-->`);
       ssrRenderList(slides.value, (slide) => {
-        _push(`<li class="item absolute bg-center bg-cover rounded-lg shadow-inner text-white transition-all duration-700 ease-in-out" style="${ssrRenderStyle({ backgroundImage: `url(${slide.image})` })}" data-v-160f24b4><div class="content absolute text-white drop-shadow-md" data-v-160f24b4><h2 class="title text-2xl md:text-4xl uppercase font-black" data-v-160f24b4>${ssrInterpolate(slide.title)}</h2><p class="description text-sm md:text-base my-4 leading-relaxed" data-v-160f24b4>${ssrInterpolate(slide.description)}</p><button class="px-6 py-2 border border-white rounded hover:bg-white hover:text-black transition" data-v-160f24b4> Read More </button></div></li>`);
+        _push(`<li class="item absolute bg-center bg-cover rounded-lg shadow-lg text-white transition-all duration-700 ease-in-out" style="${ssrRenderStyle({ backgroundImage: `url(${slide.image})` })}" data-v-650397ab><div class="overlay" data-v-650397ab></div><div class="content absolute text-white drop-shadow-md left-4 md:left-6 lg:left-8 xl:left-44" data-v-650397ab><h2 class="title text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-bold leading-tight" data-v-650397ab>${ssrInterpolate(slide.title)}</h2><p class="description text-sm md:text-base xl:text-lg my-4 leading-relaxed" data-v-650397ab>${ssrInterpolate(slide.description)}</p></div></li>`);
       });
-      _push(`<!--]--></ul><nav class="nav absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-4" data-v-160f24b4><button class="w-10 h-10 rounded-full bg-white/60 text-black hover:bg-white flex items-center justify-center" data-v-160f24b4><i class="ti ti-chevron-left" data-v-160f24b4></i></button><button class="w-10 h-10 rounded-full bg-white/60 text-black hover:bg-white flex items-center justify-center" data-v-160f24b4><i class="ti ti-chevron-right" data-v-160f24b4></i></button></nav></section>`);
+      _push(`<!--]--></ul><nav class="nav absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-4" data-v-650397ab><button class="w-10 h-10 rounded-full bg-white text-primary-600 hover:bg-white/80 flex items-center justify-center transition-all duration-300" data-v-650397ab><i class="ti ti-chevron-left text-xl" data-v-650397ab></i></button><button class="w-10 h-10 rounded-full bg-white text-primary-600 hover:bg-white/80 flex items-center justify-center transition-all duration-300" data-v-650397ab><i class="ti ti-chevron-right text-xl" data-v-650397ab></i></button></nav></section>`);
     };
   }
 };
@@ -385,7 +314,7 @@ _sfc_main$c.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Components/HeroSection.vue");
   return _sfc_setup$c ? _sfc_setup$c(props, ctx) : void 0;
 };
-const HeroSection = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["__scopeId", "data-v-160f24b4"]]);
+const HeroSection = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["__scopeId", "data-v-650397ab"]]);
 const _sfc_main$b = {
   __name: "PopularDestinationSection",
   __ssrInlineRender: true,
@@ -797,10 +726,11 @@ const _sfc_main$6 = {
           modules: [Autoplay],
           loop: true,
           autoplay: { delay: 3e3 },
-          grabCursor: true,
+          grabCursor: false,
           direction: "vertical",
           slidesPerView: 3,
-          spaceBetween: 14
+          spaceBetween: 14,
+          allowTouchMove: false
         });
       }
       document.addEventListener("click", handleClickOutside);
@@ -823,7 +753,7 @@ const _sfc_main$6 = {
       ssrRenderList(filteredList.value, (item, index) => {
         _push(`<li class="px-4 py-2 hover:bg-primary-100 hover:text-primary-800 cursor-pointer">${ssrInterpolate(item)}</li>`);
       });
-      _push(`<!--]--></ul></div><button class="text-nowrap flex items-center bg-primary-600 text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-700 transition duration-200"><i class="ti ti-search mr-2"></i> ${ssrInterpolate(__props.__t("home.scrape.button"))}</button></div></div></div></section>`);
+      _push(`<!--]--></ul></div><button class="justify-center text-nowrap flex items-center bg-primary-600 text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-700 transition duration-200"><i class="ti ti-search mr-2"></i> ${ssrInterpolate(__props.__t("home.scrape.button"))}</button></div></div></div></section>`);
     };
   }
 };
@@ -1594,10 +1524,10 @@ const _sfc_main$2 = {
               _push2(`<span class="flex items-center"${_scopeId}><i class="ti ti-search sm:-ml-1"${_scopeId}></i><span class="ml-3 hidden sm:block"${_scopeId}>${ssrInterpolate(__t("reviews.button"))}</span></span>`);
             }
             _push2(`</button></div><div class="text-gray-600"${_scopeId}><span class="font-medium"${_scopeId}>${ssrInterpolate(comments.value.length)}</span> ${ssrInterpolate(__t("reviews.tweets_found"))}</div></div></div></section><section class="py-12 bg-gray-50"${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"${_scopeId}>`);
-            if (comments.value.length === 0) {
-              _push2(`<div class="text-center py-12"${_scopeId}><div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4"${_scopeId}><i class="ti ti-search text-gray-400 text-3xl"${_scopeId}></i></div><h3 class="text-xl font-semibold text-gray-900 mb-2"${_scopeId}>${ssrInterpolate(__t("reviews.not_found.title"))}</h3><p class="text-gray-600"${_scopeId}>${ssrInterpolate(__t("reviews.not_found.description"))}</p></div>`);
-            } else if (isLoading.value) {
+            if (isLoading.value) {
               _push2(`<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"${_scopeId}><div class="bg-white shadow-sm rounded-lg p-4"${_scopeId}><div class="animate-pulse flex space-x-4"${_scopeId}><div class="rounded-full bg-slate-300 h-10 w-10"${_scopeId}></div><div class="flex-1 space-y-6 py-1"${_scopeId}><div class="h-2 bg-slate-300 rounded w-28"${_scopeId}></div><div class="space-y-3"${_scopeId}><div class="grid grid-cols-3 gap-4"${_scopeId}><div class="h-2 bg-slate-300 rounded col-span-2"${_scopeId}></div><div class="h-2 bg-slate-300 rounded col-span-1"${_scopeId}></div></div><div class="h-2 bg-slate-300 rounded"${_scopeId}></div></div><div class="h-2 bg-slate-300 rounded w-40"${_scopeId}></div></div></div></div><div class="bg-white shadow-sm rounded-lg p-4"${_scopeId}><div class="animate-pulse flex space-x-4"${_scopeId}><div class="rounded-full bg-slate-300 h-10 w-10"${_scopeId}></div><div class="flex-1 space-y-6 py-1"${_scopeId}><div class="h-2 bg-slate-300 rounded w-28"${_scopeId}></div><div class="space-y-3"${_scopeId}><div class="grid grid-cols-3 gap-4"${_scopeId}><div class="h-2 bg-slate-300 rounded col-span-2"${_scopeId}></div><div class="h-2 bg-slate-300 rounded col-span-1"${_scopeId}></div></div><div class="h-2 bg-slate-300 rounded"${_scopeId}></div></div><div class="h-2 bg-slate-300 rounded w-40"${_scopeId}></div></div></div></div><div class="bg-white shadow-sm rounded-lg p-4"${_scopeId}><div class="animate-pulse flex space-x-4"${_scopeId}><div class="rounded-full bg-slate-300 h-10 w-10"${_scopeId}></div><div class="flex-1 space-y-6 py-1"${_scopeId}><div class="h-2 bg-slate-300 rounded w-28"${_scopeId}></div><div class="space-y-3"${_scopeId}><div class="grid grid-cols-3 gap-4"${_scopeId}><div class="h-2 bg-slate-300 rounded col-span-2"${_scopeId}></div><div class="h-2 bg-slate-300 rounded col-span-1"${_scopeId}></div></div><div class="h-2 bg-slate-300 rounded"${_scopeId}></div></div><div class="h-2 bg-slate-300 rounded w-40"${_scopeId}></div></div></div></div></div>`);
+            } else if (comments.value.length === 0) {
+              _push2(`<div class="text-center py-12"${_scopeId}><div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4"${_scopeId}><i class="ti ti-search text-gray-400 text-3xl"${_scopeId}></i></div><h3 class="text-xl font-semibold text-gray-900 mb-2"${_scopeId}>${ssrInterpolate(__t("reviews.not_found.title"))}</h3><p class="text-gray-600"${_scopeId}>${ssrInterpolate(__t("reviews.not_found.description"))}</p></div>`);
             } else {
               _push2(`<div${_scopeId}><div class="columns-1 md:columns-2 lg:columns-3 gap-4 mb-8"${_scopeId}><!--[-->`);
               ssrRenderList(comments.value, (comment, index) => {
@@ -1697,17 +1627,8 @@ const _sfc_main$2 = {
               ]),
               createVNode("section", { class: "py-12 bg-gray-50" }, [
                 createVNode("div", { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" }, [
-                  comments.value.length === 0 ? (openBlock(), createBlock("div", {
+                  isLoading.value ? (openBlock(), createBlock("div", {
                     key: 0,
-                    class: "text-center py-12"
-                  }, [
-                    createVNode("div", { class: "w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4" }, [
-                      createVNode("i", { class: "ti ti-search text-gray-400 text-3xl" })
-                    ]),
-                    createVNode("h3", { class: "text-xl font-semibold text-gray-900 mb-2" }, toDisplayString(__t("reviews.not_found.title")), 1),
-                    createVNode("p", { class: "text-gray-600" }, toDisplayString(__t("reviews.not_found.description")), 1)
-                  ])) : isLoading.value ? (openBlock(), createBlock("div", {
-                    key: 1,
                     class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
                   }, [
                     createVNode("div", { class: "bg-white shadow-sm rounded-lg p-4" }, [
@@ -1758,6 +1679,15 @@ const _sfc_main$2 = {
                         ])
                       ])
                     ])
+                  ])) : comments.value.length === 0 ? (openBlock(), createBlock("div", {
+                    key: 1,
+                    class: "text-center py-12"
+                  }, [
+                    createVNode("div", { class: "w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4" }, [
+                      createVNode("i", { class: "ti ti-search text-gray-400 text-3xl" })
+                    ]),
+                    createVNode("h3", { class: "text-xl font-semibold text-gray-900 mb-2" }, toDisplayString(__t("reviews.not_found.title")), 1),
+                    createVNode("p", { class: "text-gray-600" }, toDisplayString(__t("reviews.not_found.description")), 1)
                   ])) : (openBlock(), createBlock("div", { key: 2 }, [
                     createVNode("div", { class: "columns-1 md:columns-2 lg:columns-3 gap-4 mb-8" }, [
                       (openBlock(true), createBlock(Fragment, null, renderList(comments.value, (comment, index) => {
@@ -2250,7 +2180,7 @@ const _sfc_main = {
             _push2(ssrRenderComponent(unref(Head), {
               title: __props.wisata.nama
             }, null, _parent2, _scopeId));
-            _push2(`<section class="relative h-96 lg:h-[500px] overflow-hidden mt-20" data-v-b5ecfcb0${_scopeId}><img${ssrRenderAttr("src", "/storage/" + __props.wisata.thumbnail || "/images/placeholder.jpg")}${ssrRenderAttr("alt", __props.wisata.nama)} class="w-full h-full object-cover" data-v-b5ecfcb0${_scopeId}><div class="absolute inset-0 bg-black/30" data-v-b5ecfcb0${_scopeId}></div><div class="absolute inset-0 flex items-end" data-v-b5ecfcb0${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 w-full" data-v-b5ecfcb0${_scopeId}><div class="text-white" data-v-b5ecfcb0${_scopeId}><div class="flex items-center text-sm mb-2" data-v-b5ecfcb0${_scopeId}>`);
+            _push2(`<section class="relative h-96 lg:h-[500px] overflow-hidden mt-20" data-v-9cfe4041${_scopeId}><img${ssrRenderAttr("src", "/storage/" + __props.wisata.thumbnail || "/images/placeholder.jpg")}${ssrRenderAttr("alt", __props.wisata.nama)} class="w-full h-full object-cover" data-v-9cfe4041${_scopeId}><div class="absolute inset-0 bg-black/30" data-v-9cfe4041${_scopeId}></div><div class="absolute inset-0 flex items-end" data-v-9cfe4041${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 w-full" data-v-9cfe4041${_scopeId}><div class="text-white" data-v-9cfe4041${_scopeId}><div class="flex items-center text-nowrap text-sm mb-2" data-v-9cfe4041${_scopeId}>`);
             _push2(ssrRenderComponent(unref(Link), {
               href: _ctx.route("beranda"),
               class: "hover:text-yellow-300 transition-colors duration-200"
@@ -2266,7 +2196,7 @@ const _sfc_main = {
               }),
               _: 1
             }, _parent2, _scopeId));
-            _push2(`<i class="ti ti-chevron-right mx-2" data-v-b5ecfcb0${_scopeId}></i>`);
+            _push2(`<i class="ti ti-chevron-right mx-2" data-v-9cfe4041${_scopeId}></i>`);
             _push2(ssrRenderComponent(unref(Link), {
               href: _ctx.route("wisata"),
               class: "hover:text-yellow-300 transition-colors duration-200"
@@ -2282,47 +2212,47 @@ const _sfc_main = {
               }),
               _: 1
             }, _parent2, _scopeId));
-            _push2(`<i class="ti ti-chevron-right mx-2" data-v-b5ecfcb0${_scopeId}></i><span class="text-yellow-300 truncate" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__props.wisata.nama)}</span></div><h1 class="text-3xl lg:text-5xl font-bold mb-4" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__props.wisata.nama)}</h1><div class="flex items-center space-x-6" data-v-b5ecfcb0${_scopeId}><div class="flex items-center space-x-2" data-v-b5ecfcb0${_scopeId}><i class="ti ti-map-pin-filled text-yellow-300 text-lg" data-v-b5ecfcb0${_scopeId}></i><span data-v-b5ecfcb0${_scopeId}>${ssrInterpolate((_a = __props.wisata.kabupaten) == null ? void 0 : _a.nama_kabupaten)}</span></div><div class="flex items-center space-x-2" data-v-b5ecfcb0${_scopeId}><i class="ti ti-star-filled text-yellow-300 text-lg" data-v-b5ecfcb0${_scopeId}></i><span class="font-semibold" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__props.wisata.rating)}</span><span class="text-gray-300" data-v-b5ecfcb0${_scopeId}>/5</span></div></div></div></div></div></section><section class="py-12 bg-white" data-v-b5ecfcb0${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-v-b5ecfcb0${_scopeId}><div class="grid grid-cols-1 lg:grid-cols-3 gap-8" data-v-b5ecfcb0${_scopeId}><div class="lg:col-span-2" data-v-b5ecfcb0${_scopeId}><div class="border-b border-gray-200 mb-8" data-v-b5ecfcb0${_scopeId}><nav class="-mb-px flex space-x-2 overflow-x-auto text-nowrap" data-v-b5ecfcb0${_scopeId}><!--[-->`);
+            _push2(`<i class="ti ti-chevron-right mx-2" data-v-9cfe4041${_scopeId}></i><span class="text-yellow-300 truncate" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__props.wisata.nama)}</span></div><h1 class="text-3xl lg:text-5xl font-bold mb-4" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__props.wisata.nama)}</h1><div class="flex items-center space-x-6" data-v-9cfe4041${_scopeId}><div class="flex items-center space-x-2" data-v-9cfe4041${_scopeId}><i class="ti ti-map-pin-filled text-yellow-300 text-lg" data-v-9cfe4041${_scopeId}></i><span data-v-9cfe4041${_scopeId}>${ssrInterpolate((_a = __props.wisata.kabupaten) == null ? void 0 : _a.nama_kabupaten)}</span></div><div class="flex items-center space-x-2" data-v-9cfe4041${_scopeId}><i class="ti ti-star-filled text-yellow-300 text-lg" data-v-9cfe4041${_scopeId}></i><span class="font-semibold" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__props.wisata.rating)}</span><span class="text-gray-300" data-v-9cfe4041${_scopeId}>/5</span></div></div></div></div></div></section><section class="py-12 bg-white" data-v-9cfe4041${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-v-9cfe4041${_scopeId}><div class="grid grid-cols-1 lg:grid-cols-3 gap-8" data-v-9cfe4041${_scopeId}><div class="lg:col-span-2" data-v-9cfe4041${_scopeId}><div class="border-b border-gray-200 mb-8" data-v-9cfe4041${_scopeId}><nav class="-mb-px flex space-x-2 overflow-x-auto text-nowrap" data-v-9cfe4041${_scopeId}><!--[-->`);
             ssrRenderList(tabs.value, (tab) => {
               _push2(`<button class="${ssrRenderClass([
                 "py-4 px-4 border-b-2 font-medium text-sm transition-colors duration-200 flex items-center justify-center",
                 activeTab.value === tab.id ? "border-primary-600 bg-primary-600 text-white rounded-t-lg" : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              ])}" data-v-b5ecfcb0${_scopeId}><i class="${ssrRenderClass([tab.icon, "mr-2 text-lg"])}" data-v-b5ecfcb0${_scopeId}></i> ${ssrInterpolate(__t(tab.label))}</button>`);
+              ])}" data-v-9cfe4041${_scopeId}><i class="${ssrRenderClass([tab.icon, "mr-2 text-lg"])}" data-v-9cfe4041${_scopeId}></i> ${ssrInterpolate(__t(tab.label))}</button>`);
             });
-            _push2(`<!--]--></nav></div><div class="tab-content" data-v-b5ecfcb0${_scopeId}><div style="${ssrRenderStyle(activeTab.value === "about" ? null : { display: "none" })}" class="tab-pane" data-v-b5ecfcb0${_scopeId}><div class="prose max-w-none" data-v-b5ecfcb0${_scopeId}><h2 class="text-2xl font-bold text-gray-900 mb-6" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("detail.about_destination"))}</h2><div class="text-gray-600 leading-relaxed space-y-4" data-v-b5ecfcb0${_scopeId}><div class="text-justify description-wisata" data-v-b5ecfcb0${_scopeId}>${__props.wisata.deskripsi ?? ""}</div><div class="bg-gray-50 rounded-lg p-6 mt-6" data-v-b5ecfcb0${_scopeId}><h3 class="text-lg font-semibold text-gray-900 mb-4" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("detail.quick_info"))}</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4" data-v-b5ecfcb0${_scopeId}><div class="flex items-center space-x-3" data-v-b5ecfcb0${_scopeId}><i class="ti ti-map-pin text-primary-600 text-2xl" data-v-b5ecfcb0${_scopeId}></i><div data-v-b5ecfcb0${_scopeId}><p class="text-sm text-gray-500" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("detail.village"))}</p><p class="font-medium text-sm" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__props.wisata.lokasi)}</p></div></div><div class="flex items-center space-x-3" data-v-b5ecfcb0${_scopeId}><i class="ti ti-star text-primary-600 text-2xl" data-v-b5ecfcb0${_scopeId}></i><div data-v-b5ecfcb0${_scopeId}><p class="text-sm text-gray-500" data-v-b5ecfcb0${_scopeId}>Rating</p><p class="font-medium text-sm" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__props.wisata.rating)}/5</p></div></div><div class="flex items-center space-x-3" data-v-b5ecfcb0${_scopeId}><i class="ti ti-building text-primary-600 text-2xl" data-v-b5ecfcb0${_scopeId}></i><div data-v-b5ecfcb0${_scopeId}><p class="text-sm text-gray-500" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("detail.regency"))}</p><p class="font-medium text-sm" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate((_b = __props.wisata.kabupaten) == null ? void 0 : _b.nama_kabupaten)}</p></div></div><div class="flex items-center space-x-3" data-v-b5ecfcb0${_scopeId}><i class="ti ti-gps text-primary-600 text-2xl" data-v-b5ecfcb0${_scopeId}></i><div data-v-b5ecfcb0${_scopeId}><p class="text-sm text-gray-500" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("detail.coordinates"))}</p><p class="font-medium text-sm" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__props.wisata.latitude)}, ${ssrInterpolate(__props.wisata.longitude)}</p></div></div></div></div></div></div></div><div style="${ssrRenderStyle(activeTab.value === "facilities" ? null : { display: "none" })}" class="tab-pane" data-v-b5ecfcb0${_scopeId}><h2 class="text-2xl font-bold text-gray-900 mb-6" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("common.facilities"))}</h2>`);
+            _push2(`<!--]--></nav></div><div class="tab-content" data-v-9cfe4041${_scopeId}><div style="${ssrRenderStyle(activeTab.value === "about" ? null : { display: "none" })}" class="tab-pane" data-v-9cfe4041${_scopeId}><div class="prose max-w-none" data-v-9cfe4041${_scopeId}><h2 class="text-2xl font-bold text-gray-900 mb-6" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("detail.about_destination"))}</h2><div class="text-gray-600 leading-relaxed space-y-4" data-v-9cfe4041${_scopeId}><div class="text-justify description-wisata" data-v-9cfe4041${_scopeId}>${__props.wisata.deskripsi ?? ""}</div><div class="bg-gray-50 rounded-lg p-6 mt-6" data-v-9cfe4041${_scopeId}><h3 class="text-lg font-semibold text-gray-900 mb-4" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("detail.quick_info"))}</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4" data-v-9cfe4041${_scopeId}><div class="flex items-center space-x-3" data-v-9cfe4041${_scopeId}><i class="ti ti-map-pin text-primary-600 text-2xl" data-v-9cfe4041${_scopeId}></i><div data-v-9cfe4041${_scopeId}><p class="text-sm text-gray-500" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("detail.village"))}</p><p class="font-medium text-sm" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__props.wisata.lokasi)}</p></div></div><div class="flex items-center space-x-3" data-v-9cfe4041${_scopeId}><i class="ti ti-star text-primary-600 text-2xl" data-v-9cfe4041${_scopeId}></i><div data-v-9cfe4041${_scopeId}><p class="text-sm text-gray-500" data-v-9cfe4041${_scopeId}>Rating</p><p class="font-medium text-sm" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__props.wisata.rating)}/5</p></div></div><div class="flex items-center space-x-3" data-v-9cfe4041${_scopeId}><i class="ti ti-building text-primary-600 text-2xl" data-v-9cfe4041${_scopeId}></i><div data-v-9cfe4041${_scopeId}><p class="text-sm text-gray-500" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("detail.regency"))}</p><p class="font-medium text-sm" data-v-9cfe4041${_scopeId}>${ssrInterpolate((_b = __props.wisata.kabupaten) == null ? void 0 : _b.nama_kabupaten)}</p></div></div><div class="flex items-center space-x-3" data-v-9cfe4041${_scopeId}><i class="ti ti-gps text-primary-600 text-2xl" data-v-9cfe4041${_scopeId}></i><div data-v-9cfe4041${_scopeId}><p class="text-sm text-gray-500" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("detail.coordinates"))}</p><p class="font-medium text-sm" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__props.wisata.latitude)}, ${ssrInterpolate(__props.wisata.longitude)}</p></div></div></div></div></div></div></div><div style="${ssrRenderStyle(activeTab.value === "facilities" ? null : { display: "none" })}" class="tab-pane" data-v-9cfe4041${_scopeId}><h2 class="text-2xl font-bold text-gray-900 mb-6" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("common.facilities"))}</h2>`);
             if (__props.wisata.fasilitas && __props.wisata.fasilitas.length > 0) {
-              _push2(`<div data-v-b5ecfcb0${_scopeId}><div class="grid grid-cols-2 md:grid-cols-3 gap-4" data-v-b5ecfcb0${_scopeId}><!--[-->`);
+              _push2(`<div data-v-9cfe4041${_scopeId}><div class="grid grid-cols-2 md:grid-cols-3 gap-4" data-v-9cfe4041${_scopeId}><!--[-->`);
               ssrRenderList(__props.wisata.fasilitas, (fasilitas) => {
-                _push2(`<div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:ring-2 hover:ring-primary-600 transition-all duration-300" data-v-b5ecfcb0${_scopeId}><div class="w-8 h-8 flex items-center justify-center" data-v-b5ecfcb0${_scopeId}><img${ssrRenderAttr("src", "/storage/" + fasilitas.icon)} alt="" data-v-b5ecfcb0${_scopeId}></div><span class="text-gray-700 truncate" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(fasilitas.nama)}</span></div>`);
+                _push2(`<div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:ring-2 hover:ring-primary-600 transition-all duration-300" data-v-9cfe4041${_scopeId}><div class="w-8 h-8 flex items-center justify-center" data-v-9cfe4041${_scopeId}><img${ssrRenderAttr("src", "/storage/" + fasilitas.icon)} alt="" data-v-9cfe4041${_scopeId}></div><span class="text-gray-700 truncate" data-v-9cfe4041${_scopeId}>${ssrInterpolate(fasilitas.nama)}</span></div>`);
               });
               _push2(`<!--]--></div></div>`);
             } else {
               _push2(`<!---->`);
             }
-            _push2(`</div><div style="${ssrRenderStyle(activeTab.value === "gallery" ? null : { display: "none" })}" class="tab-pane" data-v-b5ecfcb0${_scopeId}><h2 class="text-2xl font-bold text-gray-900 mb-6" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("common.gallery"))}</h2>`);
+            _push2(`</div><div style="${ssrRenderStyle(activeTab.value === "gallery" ? null : { display: "none" })}" class="tab-pane" data-v-9cfe4041${_scopeId}><h2 class="text-2xl font-bold text-gray-900 mb-6" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("common.gallery"))}</h2>`);
             if (__props.wisata.galeri && __props.wisata.galeri.length > 0) {
-              _push2(`<div data-v-b5ecfcb0${_scopeId}><div class="gallery grid grid-cols-2 lg:grid-cols-3 gap-4" data-v-b5ecfcb0${_scopeId}><!--[-->`);
+              _push2(`<div data-v-9cfe4041${_scopeId}><div class="gallery grid grid-cols-2 lg:grid-cols-3 gap-4" data-v-9cfe4041${_scopeId}><!--[-->`);
               ssrRenderList(__props.wisata.galeri, (image, index) => {
-                _push2(`<a${ssrRenderAttr("href", "/storage/" + image)}${ssrRenderAttr("alt", `${__props.wisata.nama} - ${index + 1}`)} class="relative aspect-square rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity duration-200 group" data-v-b5ecfcb0${_scopeId}><img${ssrRenderAttr("src", "/storage/" + image)}${ssrRenderAttr("alt", `${__props.wisata.nama} - ${index + 1}`)} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-v-b5ecfcb0${_scopeId}><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200 flex items-center justify-center" data-v-b5ecfcb0${_scopeId}><i class="ti ti-eye text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200" data-v-b5ecfcb0${_scopeId}></i></div></a>`);
+                _push2(`<a${ssrRenderAttr("href", "/storage/" + image)}${ssrRenderAttr("alt", `${__props.wisata.nama} - ${index + 1}`)} class="relative aspect-square rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity duration-200 group" data-v-9cfe4041${_scopeId}><img${ssrRenderAttr("src", "/storage/" + image)}${ssrRenderAttr("alt", `${__props.wisata.nama} - ${index + 1}`)} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-v-9cfe4041${_scopeId}><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200 flex items-center justify-center" data-v-9cfe4041${_scopeId}><i class="ti ti-eye text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200" data-v-9cfe4041${_scopeId}></i></div></a>`);
               });
               _push2(`<!--]--></div></div>`);
             } else {
               _push2(`<!---->`);
             }
-            _push2(`</div><div style="${ssrRenderStyle(activeTab.value === "video" ? null : { display: "none" })}" class="tab-pane" data-v-b5ecfcb0${_scopeId}><h2 class="text-2xl font-bold text-gray-900 mb-6" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("detail.destination_video"))}</h2>`);
+            _push2(`</div><div style="${ssrRenderStyle(activeTab.value === "video" ? null : { display: "none" })}" class="tab-pane" data-v-9cfe4041${_scopeId}><h2 class="text-2xl font-bold text-gray-900 mb-6" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("detail.destination_video"))}</h2>`);
             if (__props.wisata.video) {
-              _push2(`<div data-v-b5ecfcb0${_scopeId}><div class="aspect-video rounded-lg overflow-hidden" data-v-b5ecfcb0${_scopeId}><iframe width="100%" height="100%"${ssrRenderAttr("src", __props.videoEmbed)} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen data-v-b5ecfcb0${_scopeId}></iframe></div></div>`);
+              _push2(`<div data-v-9cfe4041${_scopeId}><div class="aspect-video rounded-lg overflow-hidden" data-v-9cfe4041${_scopeId}><iframe width="100%" height="100%"${ssrRenderAttr("src", __props.videoEmbed)} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen data-v-9cfe4041${_scopeId}></iframe></div></div>`);
             } else {
-              _push2(`<div class="text-center py-12" data-v-b5ecfcb0${_scopeId}><i class="ti ti-video text-gray-400 text-4xl mb-4" data-v-b5ecfcb0${_scopeId}></i><p class="text-gray-500" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("detail.video_not_found"))}</p></div>`);
+              _push2(`<div class="text-center py-12" data-v-9cfe4041${_scopeId}><i class="ti ti-video text-gray-400 text-4xl mb-4" data-v-9cfe4041${_scopeId}></i><p class="text-gray-500" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("detail.video_not_found"))}</p></div>`);
             }
-            _push2(`</div><div style="${ssrRenderStyle(activeTab.value === "maps" ? null : { display: "none" })}" class="tab-pane" data-v-b5ecfcb0${_scopeId}><h2 class="text-2xl font-bold text-gray-900 mb-6" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("detail.location_map"))}</h2><div class="bg-gray-50 rounded-lg p-6 mb-6" data-v-b5ecfcb0${_scopeId}><div class="flex items-start space-x-4" data-v-b5ecfcb0${_scopeId}><div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0" data-v-b5ecfcb0${_scopeId}><i class="ti ti-map-pin text-primary-600 text-xl" data-v-b5ecfcb0${_scopeId}></i></div><div data-v-b5ecfcb0${_scopeId}><h3 class="text-lg font-semibold text-gray-900 mb-1" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("detail.full_address"))}</h3><p class="text-gray-600 mb-1 text-sm sm:text-base" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__props.wisata.lokasi)}, ${ssrInterpolate(__props.wisata.kabupaten.nama_kabupaten)}</p><div class="flex items-center space-x-4 text-sm text-gray-500" data-v-b5ecfcb0${_scopeId}><span data-v-b5ecfcb0${_scopeId}>Lat: ${ssrInterpolate(__props.wisata.latitude)}</span><span data-v-b5ecfcb0${_scopeId}>Long: ${ssrInterpolate(__props.wisata.longitude)}</span></div></div></div></div><div class="w-full h-80 rounded-lg overflow-hidden mb-4 z-0" data-v-b5ecfcb0${_scopeId}><div id="destination-map" class="w-full h-full" data-v-b5ecfcb0${_scopeId}></div></div><div class="bg-gray-100 rounded-lg p-8 text-center" data-v-b5ecfcb0${_scopeId}><p class="text-sm text-gray-400 mb-4" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("detail.click_open_maps"))}</p><a${ssrRenderAttr("href", __props.wisata.maps_link)} target="_blank" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200" data-v-b5ecfcb0${_scopeId}><i class="ti ti-external-link mr-2 text-2xl" data-v-b5ecfcb0${_scopeId}></i> ${ssrInterpolate(__t("detail.open_google_maps"))}</a></div></div></div></div><div class="lg:col-span-1" data-v-b5ecfcb0${_scopeId}><div class="bg-primary-600 text-white rounded-xl p-6 mb-6 relative overflow-hidden" data-v-b5ecfcb0${_scopeId}><div class="absolute top-0 left-0 w-full h-full bg-[url(&#39;/assets/images/bg-pattern.png&#39;)] z-0 opacity-10" data-v-b5ecfcb0${_scopeId}></div><div class="text-center relative z-10" data-v-b5ecfcb0${_scopeId}><div class="w-16 h-16 bg-white ring-4 ring-white rounded-full flex items-center justify-center mx-auto mb-4" data-v-b5ecfcb0${_scopeId}><img${ssrRenderAttr("src", "/assets/images/ajelai.png")} alt="" class="w-full" data-v-b5ecfcb0${_scopeId}></div><h3 class="text-lg font-semibold mb-2" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("detail.need_more_info"))}</h3><p class="text-gray-100 text-sm mb-4" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("detail.ai_detail_description"))}</p>`);
+            _push2(`</div><div style="${ssrRenderStyle(activeTab.value === "maps" ? null : { display: "none" })}" class="tab-pane" data-v-9cfe4041${_scopeId}><h2 class="text-2xl font-bold text-gray-900 mb-6" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("detail.location_map"))}</h2><div class="bg-gray-50 rounded-lg p-6 mb-6" data-v-9cfe4041${_scopeId}><div class="flex items-start space-x-4" data-v-9cfe4041${_scopeId}><div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0" data-v-9cfe4041${_scopeId}><i class="ti ti-map-pin text-primary-600 text-xl" data-v-9cfe4041${_scopeId}></i></div><div data-v-9cfe4041${_scopeId}><h3 class="text-lg font-semibold text-gray-900 mb-1" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("detail.full_address"))}</h3><p class="text-gray-600 mb-1 text-sm sm:text-base" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__props.wisata.lokasi)}, ${ssrInterpolate(__props.wisata.kabupaten.nama_kabupaten)}</p><div class="flex items-center space-x-4 text-sm text-gray-500" data-v-9cfe4041${_scopeId}><span data-v-9cfe4041${_scopeId}>Lat: ${ssrInterpolate(__props.wisata.latitude)}</span><span data-v-9cfe4041${_scopeId}>Long: ${ssrInterpolate(__props.wisata.longitude)}</span></div></div></div></div><div class="w-full h-80 rounded-lg overflow-hidden mb-4 z-0" data-v-9cfe4041${_scopeId}><div id="destination-map" class="w-full h-full z-10" data-v-9cfe4041${_scopeId}></div></div><div class="bg-gray-100 rounded-lg p-8 text-center" data-v-9cfe4041${_scopeId}><p class="text-sm text-gray-400 mb-4" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("detail.click_open_maps"))}</p><a${ssrRenderAttr("href", __props.wisata.maps_link)} target="_blank" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200" data-v-9cfe4041${_scopeId}><i class="ti ti-external-link mr-2 text-2xl" data-v-9cfe4041${_scopeId}></i> ${ssrInterpolate(__t("detail.open_google_maps"))}</a></div></div></div></div><div class="lg:col-span-1" data-v-9cfe4041${_scopeId}><div class="bg-primary-600 text-white rounded-xl p-6 mb-6 relative overflow-hidden" data-v-9cfe4041${_scopeId}><div class="absolute top-0 left-0 w-full h-full bg-[url(&#39;/assets/images/bg-pattern.png&#39;)] z-0 opacity-10" data-v-9cfe4041${_scopeId}></div><div class="text-center relative z-10" data-v-9cfe4041${_scopeId}><div class="w-16 h-16 bg-white ring-4 ring-white rounded-full flex items-center justify-center mx-auto mb-4" data-v-9cfe4041${_scopeId}><img${ssrRenderAttr("src", "/assets/images/ajelai.png")} alt="" class="w-full" data-v-9cfe4041${_scopeId}></div><h3 class="text-lg font-semibold mb-2" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("detail.need_more_info"))}</h3><p class="text-gray-100 text-sm mb-4" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("detail.ai_detail_description"))}</p>`);
             _push2(ssrRenderComponent(unref(Link), {
               href: _ctx.route("chatbot"),
               class: "inline-flex items-center px-4 py-2 bg-white text-primary-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors duration-200"
             }, {
               default: withCtx((_2, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
-                  _push3(`<i class="ti ti-message-circle mr-2 text-2xl" data-v-b5ecfcb0${_scopeId2}></i> ${ssrInterpolate(__t("detail.chat_now"))}`);
+                  _push3(`<i class="ti ti-message-circle mr-2 text-2xl" data-v-9cfe4041${_scopeId2}></i> ${ssrInterpolate(__t("detail.chat_now"))}`);
                 } else {
                   return [
                     createVNode("i", { class: "ti ti-message-circle mr-2 text-2xl" }),
@@ -2332,9 +2262,9 @@ const _sfc_main = {
               }),
               _: 1
             }, _parent2, _scopeId));
-            _push2(`</div></div><div class="bg-white border border-gray-200 rounded-xl p-6" data-v-b5ecfcb0${_scopeId}><h3 class="text-lg font-semibold text-gray-900 mb-4" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("common.share"))}</h3><div class="flex space-x-3" data-v-b5ecfcb0${_scopeId}><a${ssrRenderAttr("href", `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl.value)}`)} target="_blank" class="flex items-center justify-center py-3 px-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200" data-v-b5ecfcb0${_scopeId}><i class="ti ti-brand-facebook" data-v-b5ecfcb0${_scopeId}></i></a><a${ssrRenderAttr("href", `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl.value)}&text=${encodeURIComponent(__props.wisata.nama)}`)} target="_blank" class="flex items-center justify-center py-3 px-3 bg-black text-white rounded-lg transition-colors duration-200" data-v-b5ecfcb0${_scopeId}><i class="ti ti-brand-x" data-v-b5ecfcb0${_scopeId}></i></a><a${ssrRenderAttr("href", `https://wa.me/?text=${encodeURIComponent(__props.wisata.nama + " - " + currentUrl.value)}`)} target="_blank" class="flex items-center justify-center py-3 px-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200" data-v-b5ecfcb0${_scopeId}><i class="ti ti-brand-whatsapp" data-v-b5ecfcb0${_scopeId}></i></a></div></div></div></div></div></section>`);
+            _push2(`</div></div><div class="bg-white border border-gray-200 rounded-xl p-6" data-v-9cfe4041${_scopeId}><h3 class="text-lg font-semibold text-gray-900 mb-4" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("common.share"))}</h3><div class="flex space-x-3" data-v-9cfe4041${_scopeId}><a${ssrRenderAttr("href", `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl.value)}`)} target="_blank" class="flex items-center justify-center py-3 px-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200" data-v-9cfe4041${_scopeId}><i class="ti ti-brand-facebook" data-v-9cfe4041${_scopeId}></i></a><a${ssrRenderAttr("href", `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl.value)}&text=${encodeURIComponent(__props.wisata.nama)}`)} target="_blank" class="flex items-center justify-center py-3 px-3 bg-black text-white rounded-lg transition-colors duration-200" data-v-9cfe4041${_scopeId}><i class="ti ti-brand-x" data-v-9cfe4041${_scopeId}></i></a><a${ssrRenderAttr("href", `https://wa.me/?text=${encodeURIComponent(__props.wisata.nama + " - " + currentUrl.value)}`)} target="_blank" class="flex items-center justify-center py-3 px-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200" data-v-9cfe4041${_scopeId}><i class="ti ti-brand-whatsapp" data-v-9cfe4041${_scopeId}></i></a></div></div></div></div></div></section>`);
             if (__props.relatedWisatas && __props.relatedWisatas.length > 0) {
-              _push2(`<section class="py-12 bg-gray-50" data-v-b5ecfcb0${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-v-b5ecfcb0${_scopeId}><h2 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-8" data-v-b5ecfcb0${_scopeId}>${ssrInterpolate(__t("detail.other_destinations"))}</h2><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-v-b5ecfcb0${_scopeId}><!--[-->`);
+              _push2(`<section class="py-12 bg-gray-50" data-v-9cfe4041${_scopeId}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-v-9cfe4041${_scopeId}><h2 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-8" data-v-9cfe4041${_scopeId}>${ssrInterpolate(__t("detail.other_destinations"))}</h2><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-v-9cfe4041${_scopeId}><!--[-->`);
               ssrRenderList(__props.relatedWisatas, (related) => {
                 _push2(ssrRenderComponent(unref(Link), {
                   href: _ctx.route("wisata.show", { id: related.slug }),
@@ -2344,14 +2274,14 @@ const _sfc_main = {
                   default: withCtx((_2, _push3, _parent3, _scopeId2) => {
                     var _a2, _b2;
                     if (_push3) {
-                      _push3(`<div class="relative h-48" data-v-b5ecfcb0${_scopeId2}><img${ssrRenderAttr("src", "/storage/" + related.thumbnail || "/images/placeholder.jpg")}${ssrRenderAttr("alt", related.nama)} class="w-full h-full object-cover" data-v-b5ecfcb0${_scopeId2}><div class="absolute top-4 right-4 bg-white backdrop-blur-sm px-2 py-1 rounded-lg" data-v-b5ecfcb0${_scopeId2}><div class="flex items-center space-x-1" data-v-b5ecfcb0${_scopeId2}><i class="ti ti-star-filled text-yellow-400 text-sm" data-v-b5ecfcb0${_scopeId2}></i><span class="text-sm font-medium" data-v-b5ecfcb0${_scopeId2}>${ssrInterpolate(related.rating)}</span></div></div></div><div class="p-6" data-v-b5ecfcb0${_scopeId2}><div class="flex items-center text-sm text-gray-500 mb-2" data-v-b5ecfcb0${_scopeId2}><i class="ti ti-map-pin-filled mr-1 text-lg text-primary-600" data-v-b5ecfcb0${_scopeId2}></i> ${ssrInterpolate((_a2 = related.kabupaten) == null ? void 0 : _a2.nama_kabupaten)}</div><h3 class="text-lg font-semibold text-gray-900 mb-4" data-v-b5ecfcb0${_scopeId2}>${ssrInterpolate(related.nama)}</h3>`);
+                      _push3(`<div class="relative h-48" data-v-9cfe4041${_scopeId2}><img${ssrRenderAttr("src", "/storage/" + related.thumbnail || "/images/placeholder.jpg")}${ssrRenderAttr("alt", related.nama)} class="w-full h-full object-cover" data-v-9cfe4041${_scopeId2}><div class="absolute top-4 right-4 bg-white backdrop-blur-sm px-2 py-1 rounded-lg" data-v-9cfe4041${_scopeId2}><div class="flex items-center space-x-1" data-v-9cfe4041${_scopeId2}><i class="ti ti-star-filled text-yellow-400 text-sm" data-v-9cfe4041${_scopeId2}></i><span class="text-sm font-medium" data-v-9cfe4041${_scopeId2}>${ssrInterpolate(related.rating)}</span></div></div></div><div class="p-6" data-v-9cfe4041${_scopeId2}><div class="flex items-center text-sm text-gray-500 mb-2" data-v-9cfe4041${_scopeId2}><i class="ti ti-map-pin-filled mr-1 text-lg text-primary-600" data-v-9cfe4041${_scopeId2}></i> ${ssrInterpolate((_a2 = related.kabupaten) == null ? void 0 : _a2.nama_kabupaten)}</div><h3 class="text-lg font-semibold text-gray-900 mb-4" data-v-9cfe4041${_scopeId2}>${ssrInterpolate(related.nama)}</h3>`);
                       _push3(ssrRenderComponent(unref(Link), {
                         href: _ctx.route("wisata.show", related.slug),
                         class: "inline-flex items-center text-primary-600 hover:text-primary-700 font-medium"
                       }, {
                         default: withCtx((_3, _push4, _parent4, _scopeId3) => {
                           if (_push4) {
-                            _push4(`${ssrInterpolate(__t("common.view_details"))} <i class="ti ti-arrow-right ml-1" data-v-b5ecfcb0${_scopeId3}></i>`);
+                            _push4(`${ssrInterpolate(__t("common.view_details"))} <i class="ti ti-arrow-right ml-1" data-v-9cfe4041${_scopeId3}></i>`);
                           } else {
                             return [
                               createTextVNode(toDisplayString(__t("common.view_details")) + " ", 1),
@@ -2404,14 +2334,14 @@ const _sfc_main = {
             } else {
               _push2(`<!---->`);
             }
-            _push2(`<div class="fixed bottom-6 right-6 z-50" data-v-b5ecfcb0${_scopeId}>`);
+            _push2(`<div class="fixed bottom-6 right-6 z-40" data-v-9cfe4041${_scopeId}>`);
             _push2(ssrRenderComponent(unref(Link), {
               href: _ctx.route("chatbot"),
               class: "w-14 h-14 bg-white text-white rounded-full flex items-center justify-center shadow-lg ring-4 ring-primary-600 transition-all duration-300 transform hover:scale-110"
             }, {
               default: withCtx((_2, _push3, _parent3, _scopeId2) => {
                 if (_push3) {
-                  _push3(`<img${ssrRenderAttr("src", "/assets/images/ajelai.png")} alt="" class="w-full" data-v-b5ecfcb0${_scopeId2}>`);
+                  _push3(`<img${ssrRenderAttr("src", "/assets/images/ajelai.png")} alt="" class="w-full" data-v-9cfe4041${_scopeId2}>`);
                 } else {
                   return [
                     createVNode("img", {
@@ -2440,7 +2370,7 @@ const _sfc_main = {
                 createVNode("div", { class: "absolute inset-0 flex items-end" }, [
                   createVNode("div", { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 w-full" }, [
                     createVNode("div", { class: "text-white" }, [
-                      createVNode("div", { class: "flex items-center text-sm mb-2" }, [
+                      createVNode("div", { class: "flex items-center text-nowrap text-sm mb-2" }, [
                         createVNode(unref(Link), {
                           href: _ctx.route("beranda"),
                           class: "hover:text-yellow-300 transition-colors duration-200"
@@ -2645,7 +2575,7 @@ const _sfc_main = {
                               id: "destination-map",
                               ref_key: "mapContainer",
                               ref: mapContainer,
-                              class: "w-full h-full"
+                              class: "w-full h-full z-10"
                             }, null, 512)
                           ]),
                           createVNode("div", { class: "bg-gray-100 rounded-lg p-8 text-center" }, [
@@ -2773,7 +2703,7 @@ const _sfc_main = {
                   ])
                 ])
               ])) : createCommentVNode("", true),
-              createVNode("div", { class: "fixed bottom-6 right-6 z-50" }, [
+              createVNode("div", { class: "fixed bottom-6 right-6 z-40" }, [
                 createVNode(unref(Link), {
                   href: _ctx.route("chatbot"),
                   class: "w-14 h-14 bg-white text-white rounded-full flex items-center justify-center shadow-lg ring-4 ring-primary-600 transition-all duration-300 transform hover:scale-110"
@@ -2802,7 +2732,7 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Pages/Wisata/Show.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const Show = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-b5ecfcb0"]]);
+const Show = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-9cfe4041"]]);
 const __vite_glob_0_5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Show

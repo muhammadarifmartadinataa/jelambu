@@ -39,8 +39,11 @@ const sampleComments = [
     },
 ]
 
-const filteredList = computed(() => {
-  if (!searchQuery.value) return []
+const dropdownItems = computed(() => {
+  if (!searchQuery.value) {
+    return props.destinations
+  }
+
   return props.destinations.filter(item =>
     item.toLowerCase().includes(searchQuery.value.toLowerCase())
   )
@@ -86,6 +89,12 @@ function handleClickOutside(e) {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
 })
+
+const clearSearch = () => {
+  searchQuery.value = ''
+  selectedWisata.value = null
+  showDropdown.value = true
+}
 </script>
 
 <template>
@@ -121,12 +130,21 @@ onBeforeUnmount(() => {
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500"
                         />
 
+                        <button
+                            v-if="searchQuery"
+                            @click="clearSearch"
+                            type="button"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        >
+                            <i class="ti ti-x"></i>
+                        </button>
+
                         <ul
-                            v-show="showDropdown && filteredList.length"
+                            v-show="showDropdown && dropdownItems.length"
                             class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-40 overflow-auto"
                         >
                             <li
-                                v-for="(item, index) in filteredList"
+                                v-for="(item, index) in dropdownItems"
                                 :key="index"
                                 @click="selectItem(item)"
                                 class="px-4 py-2 hover:bg-primary-100 hover:text-primary-800 cursor-pointer"
