@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\SeoHelper;
 use App\Models\Kabupaten;
+use App\Models\Keyword;
 use App\Models\Wisata;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -19,6 +20,7 @@ class BerandaController extends Controller
         $kabupatens = Kabupaten::withCount('wisatas')->get();
         $wisatas = Wisata::with('kabupaten')->take(6)->get();
         $destinations = Wisata::all()->pluck('twitter_keyword');
+        $keywords = Keyword::all()->pluck('keyword');
 
         // SEO Meta Tags untuk homepage
         $meta = SeoHelper::generateMetaTags([
@@ -42,6 +44,7 @@ class BerandaController extends Controller
             'currentLang' => $lang,
             'translations' => $this->getTranslations($lang),
             'destinations' => $destinations,
+            'keywords' => $keywords,
             'meta' => $meta,
             'structuredData' => $structuredData
         ]);

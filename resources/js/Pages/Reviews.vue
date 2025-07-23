@@ -6,7 +6,8 @@ import axios from 'axios'
 
 const props = defineProps({
     currentLang: String,
-    destinations: Object,
+    destinations: Array,
+    keywords: Array
 })
 
 const page = usePage()
@@ -23,13 +24,17 @@ const __t = (key) => {
     return key.split('.').reduce((obj, part) => obj && obj[part], translations) || key
 }
 
-const dropdownItems = computed(() => {
-  if (!searchQuery.value) {
-    return props.destinations
-  }
+const filteredKeywords = computed(() => {
+  if (!searchQuery.value) return props.keywords
+  return props.keywords.filter(k =>
+    k.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+})
 
-  return props.destinations.filter(item =>
-    item.toLowerCase().includes(searchQuery.value.toLowerCase())
+const filteredDestinations = computed(() => {
+  if (!searchQuery.value) return props.destinations
+  return props.destinations.filter(d =>
+    d.toLowerCase().includes(searchQuery.value.toLowerCase())
   )
 })
 
@@ -138,19 +143,50 @@ const clearSearch = () => {
                                 <i class="ti ti-x"></i>
                             </button>
 
-                            <ul
-                                v-show="showDropdown && dropdownItems.length"
-                                class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-40 overflow-auto"
+                            <div
+                                v-show="showDropdown && (filteredKeywords.length || filteredDestinations.length)"
+                                class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto p-4 space-y-3"
                             >
-                                <li
-                                    v-for="(item, index) in dropdownItems"
-                                    :key="index"
-                                    @click="selectItem(item)"
-                                    class="px-4 py-2 hover:bg-primary-100 hover:text-primary-800 cursor-pointer"
-                                >
-                                    {{ item }}
-                                </li>
-                            </ul>
+                                <!-- Keywords -->
+                                <div v-if="filteredKeywords.length">
+                                    <h4 class="text-sm text-gray-500 mb-1">Kata Kunci</h4>
+                                    <div class="flex flex-wrap gap-2">
+                                        <button
+                                            v-for="(kw, i) in filteredKeywords"
+                                            :key="`kw-${i}`"
+                                            @click="selectItem(kw)"
+                                            :class="[
+                                                'px-3 py-1 text-xs rounded-full border transition',
+                                                selectedWisata === kw
+                                                ? 'bg-primary-600 text-white'
+                                                : 'hover:bg-gray-100 text-gray-700'
+                                            ]"
+                                            >
+                                            {{ kw }}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Destinations -->
+                                <div v-if="filteredDestinations.length">
+                                    <h4 class="text-sm text-gray-500 mt-2 mb-1">Destinasi</h4>
+                                    <div class="flex flex-wrap gap-2">
+                                        <button
+                                            v-for="(dst, i) in filteredDestinations"
+                                            :key="`dst-${i}`"
+                                            @click="selectItem(dst)"
+                                            :class="[
+                                                'px-3 py-1 text-xs rounded-full border transition',
+                                                selectedWisata === dst
+                                                ? 'bg-primary-600 text-white'
+                                                : 'hover:bg-gray-100 text-gray-700'
+                                            ]"
+                                            >
+                                            {{ dst }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <button @click="telusuriKomentar" :disabled="isLoading || !selectedWisata" class="disabled:opacity-50 text-nowrap bg-primary-600 text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-700 transition duration-200">
                             <span v-if="isLoading" class="flex items-center">

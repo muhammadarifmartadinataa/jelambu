@@ -68,6 +68,9 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make()
                     ->label('Data Wisata')
                     ->collapsible(false),
+                NavigationGroup::make()
+                    ->label('Twitter Scrapper')
+                    ->collapsible(false),
             ]);
     }
 }

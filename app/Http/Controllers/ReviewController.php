@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\SeoHelper;
+use App\Models\Keyword;
 use App\Models\Wisata;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -19,7 +20,8 @@ class ReviewController extends Controller
         session(['locale' => $lang]);
         app()->setLocale($lang);
 
-        $destinations = Wisata::all()->pluck('twitter_keyword');
+        $destinations = Wisata::all()->pluck('twitter_keyword')->filter()->unique()->values();
+        $keywords = Keyword::all()->pluck('keyword')->filter()->unique()->values();
 
         // SEO Meta Tags untuk homepage
         $meta = SeoHelper::generateMetaTags([
@@ -47,6 +49,7 @@ class ReviewController extends Controller
             'currentLang' => $lang,
             'translations' => $this->getTranslations($lang),
             'destinations' => $destinations,
+            'keywords' => $keywords,
             'meta' => $meta,
             'structuredData' => $structuredData,
             'breadcrumbStructuredData' => $breadcrumbStructuredData,

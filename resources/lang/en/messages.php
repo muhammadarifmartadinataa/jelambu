@@ -70,7 +70,7 @@ return [
         'scrape' => [
             'title' => 'Want to know what people say about your favorite destination?',
             'description' => 'Discover insights directly from Twitter/X conversations about tourism spots in Lampung. Search by place name and see what people really think.',
-            'placeholder' => 'Choose your favorite destination',
+            'placeholder' => 'Choose a keyword or destination',
             'button' => 'Scrape Tweets'
         ]
     ],
@@ -173,7 +173,7 @@ return [
     'reviews' => [
         'title' => 'Pull Reviews',
         'description' => 'See what people are saying on Twitter/X about tourism destinations in Lampung.',
-        'placeholder' => 'Choose your favorite destination',
+        'placeholder' => 'Choose a keyword or destination',
         'button' => 'Pull',
         'button_loading' => 'Pulling...',
         'tweets_found' => 'tweets found',

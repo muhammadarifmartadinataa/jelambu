@@ -70,7 +70,7 @@ return [
         'scrape' => [
             'title' => 'Ingin tahu komentar orang lain tentang wisata favoritmu?',
             'description' => 'Temukan insight langsung dari percakapan orang-orang di Twitter/X tentang destinasi wisata di Lampung. Kamu bisa cari berdasarkan nama tempat dan lihat pendapat asli mereka.',
-            'placeholder' => 'Pilih wisata favoritmu',
+            'placeholder' => 'Pilih kata kunci atau destinasi',
             'button' => 'Scrape Tweet'
         ]
     ],
@@ -173,7 +173,7 @@ return [
     'reviews' => [
         'title' => 'Tarik Ulasan',
         'description' => 'Cari tahu apa yang orang - orang katakan di Twitter/X tentang destinasi wisata di Lampung.',
-        'placeholder' => 'Pilih wisata favoritmu',
+        'placeholder' => 'Pilih kata kunci atau destinasi',
         'button' => 'Tarik',
         'button_loading' => 'Menarik...',
         'tweets_found' => 'tweet telah ditemukan',

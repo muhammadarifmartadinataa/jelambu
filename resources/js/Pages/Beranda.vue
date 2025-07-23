@@ -14,6 +14,7 @@ const props = defineProps({
     wisatas: Array,
     currentLang: String,
     destinations: Array,
+    keywords: Array
 })
 
 const page = usePage()
@@ -35,7 +36,7 @@ const __t = (key) => {
         <CTAAjelSection :__t="__t" />
 
         <!-- Scrape Section -->
-        <ScrapeSection :destinations="destinations" :__t="__t" />
+        <ScrapeSection :destinations="destinations" :__t="__t" :keywords="keywords"/>
 
         <!-- Stats Section -->
         <StatsSection :kabupatens="kabupatens" :wisatas="wisatas" :__t="__t" />
