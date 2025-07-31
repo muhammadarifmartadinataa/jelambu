@@ -205,6 +205,7 @@ const clearSearch = () => {
                         <span class="font-medium">{{ comments.length }}</span> {{ __t('reviews.tweets_found') }}
                     </div>
                 </div>
+                <p class="mt-4 sm:mt-2 text-sm text-gray-600 italic font-medium text-center sm:text-left">*{{ __t('reviews.info') }}</p>
             </div>
         </section>    
         

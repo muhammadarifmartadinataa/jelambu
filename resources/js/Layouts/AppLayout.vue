@@ -239,8 +239,8 @@ onUnmounted(() => {
                                 <span>info@jelambu.com</span>
                             </p>
                             <p class="flex items-center space-x-2">
-                                <i class="ti ti-phone text-primary-600"></i>
-                                <span>+62 812 3456 7890</span>
+                                <i class="ti ti-brand-whatsapp text-primary-600"></i>
+                                <span>+62 822-6978-9818</span>
                             </p>
                             <p class="flex items-center space-x-2">
                                 <i class="ti ti-map-pin text-primary-600"></i>

@@ -172,11 +172,12 @@ return [
 
     'reviews' => [
         'title' => 'Pull Reviews',
-        'description' => 'See what people are saying on Twitter/X about tourism destinations in Lampung.',
+        'description' => 'See what people are saying on Twitter or X Platform about tourism destinations in Lampung.',
         'placeholder' => 'Choose a keyword or destination',
         'button' => 'Pull',
         'button_loading' => 'Pulling...',
         'tweets_found' => 'tweets found',
+        'info' => 'If no results, try pulling again later',
         'not_found' => [
             'title' => 'No tweets found',
             'description' => 'Try pulling again later',

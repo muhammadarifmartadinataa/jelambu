@@ -172,11 +172,12 @@ return [
 
     'reviews' => [
         'title' => 'Tarik Ulasan',
-        'description' => 'Cari tahu apa yang orang - orang katakan di Twitter/X tentang destinasi wisata di Lampung.',
+        'description' => 'Cari tahu apa yang orang - orang katakan di Platform Twitter atau X tentang destinasi wisata di Lampung.',
         'placeholder' => 'Pilih kata kunci atau destinasi',
         'button' => 'Tarik',
         'button_loading' => 'Menarik...',
         'tweets_found' => 'tweet telah ditemukan',
+        'info' => 'Jika tidak ada hasil, coba sekali lagi',
         'not_found' => [
             'title' => 'Tidak ada tweet ditemukan',
             'description' => 'Coba lakukan penarikan beberapa saat lagi',

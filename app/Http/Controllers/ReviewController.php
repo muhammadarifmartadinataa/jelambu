@@ -117,8 +117,8 @@ class ReviewController extends Controller
 
         $summary = $geminiResponse['candidates'][0]['content']['parts'][0]['text'] ?? 'Maaf, tidak bisa memberikan kesimpulan.';
 
-        Cache::put("tweets:{$query}", $tweets, now()->addDay());
-        Cache::put("summary:{$query}", $summary, now()->addDay());
+        Cache::put("tweets:{$query}", $tweets, now()->addMonth());
+        Cache::put("summary:{$query}", $summary, now()->addMonth());
 
         return response()->json([
             'tweets' => $tweets,
