@@ -141,7 +141,7 @@ const scrollToBottom = async () => {
         </section>
 
         <!-- Chat Interface -->
-        <section class="py-12 bg-gray-50">
+        <section class="py-12 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                     <!-- Chat Header -->
@@ -264,7 +264,7 @@ const scrollToBottom = async () => {
         </section>
 
         <!-- Features Section -->
-        <section class="py-16 bg-white">
+        <section class="py-16 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
@@ -276,9 +276,9 @@ const scrollToBottom = async () => {
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="text-center p-6 bg-gray-50 rounded-xl">
-                        <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="ti ti-map-pin text-primary-600 text-2xl"></i>
+                    <div class="text-center p-6 bg-white rounded-xl">
+                        <div class="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="ti ti-map-pin text-secondary-400 text-2xl"></i>
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">
                             {{ __t('chatbot.features.destinations.title') }}
@@ -288,9 +288,9 @@ const scrollToBottom = async () => {
                         </p>
                     </div>
 
-                    <div class="text-center p-6 bg-gray-50 rounded-xl">
-                        <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="ti ti-bulb text-primary-600 text-2xl"></i>
+                    <div class="text-center p-6 bg-white rounded-xl">
+                        <div class="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="ti ti-bulb text-secondary-400 text-2xl"></i>
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">
                             {{ __t('chatbot.features.travel_tips.title') }}
@@ -300,9 +300,9 @@ const scrollToBottom = async () => {
                         </p>
                     </div>
 
-                    <div class="text-center p-6 bg-gray-50 rounded-xl">
-                        <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="ti ti-heart text-primary-600 text-2xl"></i>
+                    <div class="text-center p-6 bg-white rounded-xl">
+                        <div class="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="ti ti-heart text-secondary-400 text-2xl"></i>
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">
                             {{ __t('chatbot.features.recommendations.title') }}
@@ -312,9 +312,9 @@ const scrollToBottom = async () => {
                         </p>
                     </div>
 
-                    <div class="text-center p-6 bg-gray-50 rounded-xl">
-                        <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="ti ti-info-circle text-primary-600 text-2xl"></i>
+                    <div class="text-center p-6 bg-white rounded-xl">
+                        <div class="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="ti ti-info-circle text-secondary-400 text-2xl"></i>
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">
                             {{ __t('chatbot.features.detailed_info.title') }}

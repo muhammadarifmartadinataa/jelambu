@@ -123,12 +123,12 @@ watch(activeTab, async (val) => {
                                 {{ __t('nav.destinations') }}
                             </Link>
                             <i class="ti ti-chevron-right mx-2"></i>
-                            <span class="text-yellow-300 truncate">{{ wisata.nama }}</span>
+                            <span class="text-secondary-400 truncate">{{ wisata.nama }}</span>
                         </div>
                         <h1 class="text-3xl lg:text-5xl font-bold mb-4">{{ wisata.nama }}</h1>
                         <div class="flex items-center space-x-6">
                             <div class="flex items-center space-x-2">
-                                <i class="ti ti-map-pin-filled text-yellow-300 text-lg"></i>
+                                <i class="ti ti-map-pin-filled text-secondary-400 text-lg"></i>
                                 <span>{{ wisata.kabupaten?.nama_kabupaten }}</span>
                             </div>
                             <div class="flex items-center space-x-2">
@@ -183,28 +183,28 @@ watch(activeTab, async (val) => {
                                             <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __t('detail.quick_info') }}</h3>
                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 <div class="flex items-center space-x-3">
-                                                    <i class="ti ti-map-pin text-primary-600 text-2xl"></i>
+                                                    <i class="ti ti-map-pin text-secondary-400 text-2xl"></i>
                                                     <div>
                                                         <p class="text-sm text-gray-500">{{ __t('detail.village') }}</p>
                                                         <p class="font-medium text-sm">{{ wisata.lokasi }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center space-x-3">
-                                                    <i class="ti ti-star text-primary-600 text-2xl"></i>
+                                                    <i class="ti ti-star text-secondary-400 text-2xl"></i>
                                                     <div>
                                                         <p class="text-sm text-gray-500">Rating</p>
                                                         <p class="font-medium text-sm">{{ wisata.rating }}/5</p>
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center space-x-3">
-                                                    <i class="ti ti-building text-primary-600 text-2xl"></i>
+                                                    <i class="ti ti-building text-secondary-400 text-2xl"></i>
                                                     <div>
                                                         <p class="text-sm text-gray-500">{{ __t('detail.regency') }}</p>
                                                         <p class="font-medium text-sm">{{ wisata.kabupaten?.nama_kabupaten }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center space-x-3">
-                                                    <i class="ti ti-gps text-primary-600 text-2xl"></i>
+                                                    <i class="ti ti-gps text-secondary-400 text-2xl"></i>
                                                     <div>
                                                         <p class="text-sm text-gray-500">{{ __t('detail.coordinates') }}</p>
                                                         <p class="font-medium text-sm">{{ wisata.latitude }}, {{ wisata.longitude }}</p>

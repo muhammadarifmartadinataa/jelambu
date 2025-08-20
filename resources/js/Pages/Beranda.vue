@@ -14,7 +14,8 @@ const props = defineProps({
     wisatas: Array,
     currentLang: String,
     destinations: Array,
-    keywords: Array
+    keywords: Array,
+    statsWisata: Number
 })
 
 const page = usePage()
@@ -39,7 +40,7 @@ const __t = (key) => {
         <ScrapeSection :destinations="destinations" :__t="__t" :keywords="keywords"/>
 
         <!-- Stats Section -->
-        <StatsSection :kabupatens="kabupatens" :wisatas="wisatas" :__t="__t" />
+        <StatsSection :kabupatens="kabupatens" :wisatas="wisatas" :__t="__t" :statsWisata="statsWisata" />
 
         <!-- Regencies Section -->
         <RegenciesSection :kabupatens="kabupatens" :__t="__t" />

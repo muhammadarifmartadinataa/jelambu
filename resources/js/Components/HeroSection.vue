@@ -86,8 +86,8 @@ onBeforeUnmount(() => {
 
         <!-- Navigasi -->
         <nav class="nav absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-4">
-            <button @click="prev" class="w-10 h-10 rounded-full bg-white text-primary-600 hover:bg-white/80 flex items-center justify-center transition-all duration-300"><i class="ti ti-chevron-left text-xl"></i></button>
-            <button @click="next" class="w-10 h-10 rounded-full bg-white text-primary-600 hover:bg-white/80 flex items-center justify-center transition-all duration-300"><i class="ti ti-chevron-right text-xl"></i></button>
+            <button @click="prev" class="w-10 h-10 rounded-full bg-secondary-400 text-white hover:bg-secondary-500 flex items-center justify-center transition-all duration-300"><i class="ti ti-chevron-left text-xl"></i></button>
+            <button @click="next" class="w-10 h-10 rounded-full bg-secondary-400 text-white hover:bg-secondary-500 flex items-center justify-center transition-all duration-300"><i class="ti ti-chevron-right text-xl"></i></button>
         </nav>
     </section>
 </template>
@@ -128,19 +128,19 @@ onBeforeUnmount(() => {
 }
 
 .item:nth-child(3) {
-    left: 50%;
+    left: 53%;
 }
 
 .item:nth-child(4) {
-    left: calc(50% + 220px);
+    left: calc(53% + 220px);
 }
 
 .item:nth-child(5) {
-    left: calc(50% + 440px);
+    left: calc(53% + 440px);
 }
 
 .item:nth-child(6) {
-    left: calc(50% + 660px);
+    left: calc(53% + 660px);
     opacity: 0;
 }
 

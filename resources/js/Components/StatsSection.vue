@@ -4,7 +4,8 @@ import { computed, ref } from 'vue'
 const props = defineProps({
     kabupatens: Array,
     wisatas: Array,
-    __t: Function
+    __t: Function,
+    statsWisata: Number
 })
 
 const averageRating = computed(() => {
@@ -22,7 +23,7 @@ const stats = ref([
     {
         title: props.__t('home.stats.destinations'),
         icon: 'ti ti-map',
-        value: props.wisatas.length
+        value: props.statsWisata
     },
     {
         title: props.__t('home.stats.average_rating'),

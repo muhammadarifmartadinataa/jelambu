@@ -63,7 +63,7 @@ return [
             'visitors' => 'Visitors',
         ],
         'ajelai' => [
-            'title' => '<span class="text-primary-600">AJEL AI</span><br>Who & Why?',
+            'title' => '<span class="text-secondary-400">AJEL</span> <span class="text-primary-600">AI</span><br>Who & Why?',
             'description' => 'Ajel AI is an <strong>AI assistant</strong> developed to help you <strong>plan the perfect trip</strong>.<br><br>Ajel AI is ready to help you find information about blue tourism destinations in Lampung. Ask about locations, facilities, attractions, and more!',
             'button' => 'Ask Now'
         ],

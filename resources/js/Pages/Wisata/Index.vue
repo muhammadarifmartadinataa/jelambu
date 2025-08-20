@@ -161,7 +161,7 @@ const resetFilters = () => {
                         
                         <div class="p-6">
                             <div class="flex items-center text-sm text-gray-500 mb-2">
-                                <i class="ti ti-map-pin-filled mr-1 text-primary-600 text-lg"></i>
+                                <i class="ti ti-map-pin-filled mr-1 text-secondary-400 text-lg"></i>
                                 {{ wisata.kabupaten?.nama_kabupaten }}
                             </div>
                             
@@ -183,7 +183,7 @@ const resetFilters = () => {
         </section>
 
         <!-- CTA Section -->
-        <section class="py-16 bg-primary-600 text-white relative overflow-hidden">
+        <section class="py-16 bg-secondary-400 text-white relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-full bg-[url('/assets/images/bg-pattern.png')] z-0 opacity-10"></div>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                 <div class="max-w-3xl mx-auto">
@@ -196,10 +196,10 @@ const resetFilters = () => {
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link 
                             :href="route('chatbot')"
-                            class="inline-flex justify-center items-center px-5 py-3 bg-white text-primary-500 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                            class="inline-flex justify-center items-center px-5 py-3 bg-white text-secondary-400 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
                         >
-                            <div class="w-8 h-8 bg-primary-300 rounded-full mr-2">
-                                <img :src="'/assets/images/ajelai.png'" alt="" class="w-full">
+                            <div class="w-8 h-8 bg-secondary-300 rounded-full mr-2 flex justify-center">
+                                <i class="ti ti-robot text-2xl text-white"></i>
                             </div>
                             {{ __t('destinations.ask_ai') }}
                         </Link>

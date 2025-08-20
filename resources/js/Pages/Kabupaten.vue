@@ -87,7 +87,7 @@ const filteredKabupatens = computed(() => {
                                     <img :src="'/storage/' + kabupaten.logo" alt="">
                                 </div>
                                 <div class="text-right">
-                                    <div class="text-2xl font-bold text-primary-600">{{ kabupaten.wisatas_count || 0 }}</div>
+                                    <div class="text-2xl font-bold text-secondary-400">{{ kabupaten.wisatas_count || 0 }}</div>
                                     <div class="text-sm text-gray-500">{{ __t('regencies.destinations_count') }}</div>
                                 </div>
                             </div>
@@ -106,10 +106,6 @@ const filteredKabupatens = computed(() => {
                                     {{ __t('regencies.view_destinations') }}
                                     <i class="ti ti-arrow-right ml-1"></i>
                                 </Link>
-                                
-                                <button class="p-2 text-gray-400 hover:text-primary-600 transition-colors duration-200">
-                                    <i class="ti ti-info-circle"></i>
-                                </button>
                             </div>
                         </div>
                     </Link>
@@ -118,7 +114,7 @@ const filteredKabupatens = computed(() => {
         </section>
 
         <!-- CTA Section -->
-        <section class="py-16 bg-primary-600 text-white relative overflow-hidden">
+        <section class="py-16 bg-secondary-400 text-white relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-full bg-[url('/assets/images/bg-pattern.png')] z-0 opacity-10"></div>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                 <div class="max-w-3xl mx-auto">
@@ -130,7 +126,7 @@ const filteredKabupatens = computed(() => {
                     </p>
                     <Link 
                         :href="route('wisata')"
-                        class="inline-flex items-center px-5 py-3 bg-white text-primary-600 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                        class="inline-flex items-center px-5 py-3 bg-white text-secondary-400 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
                     >
                         <i class="ti ti-compass mr-2 text-2xl"></i>
                         {{ __t('regencies.explore_all_destinations') }}

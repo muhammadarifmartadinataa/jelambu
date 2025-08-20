@@ -104,21 +104,21 @@ const clearSearch = () => {
 </script>
 
 <template>
-    <section class="py-16 bg-gray-50">
+    <section class="py-16 bg-secondary-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-5 gap-16 items-center">
             <div class="col-span-5 md:col-span-2 relative">
                 <div class="swiper h-96 overflow-hidden px-1" ref="swiperContainer">
                     <div class="swiper-wrapper">
                         <div v-for="(comment, index) in sampleComments" :key="index" class="swiper-slide bg-white rounded-lg p-5 shadow-sm flex gap-3">
-                            <img :src="`https://ui-avatars.com/api/?name=${comment.user}&background=2371ED&color=fff`" alt="user" class="w-10 h-10 rounded-full">
+                            <img :src="`https://ui-avatars.com/api/?name=${comment.user}&background=fbb41e&color=fff`" alt="user" class="w-10 h-10 rounded-full">
                             <p class="text-sm text-gray-800">
-                                <span class="font-semibold text-primary-600">@{{ comment.user }}</span><br>{{ comment.text }}
+                                <span class="font-semibold text-secondary-400">@{{ comment.user }}</span><br>{{ comment.text }}
                             </p>
                         </div>
                     </div>
                 </div>
-                <div class="absolute z-10 top-0 left-0 right-0 h-20 bg-gradient-to-b from-gray-50 to-transparent pointer-events-none"></div>
-                <div class="absolute z-10 bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-gray-50 to-transparent pointer-events-none"></div>
+                <div class="absolute z-10 top-0 left-0 right-0 h-20 bg-gradient-to-b from-secondary-50 to-transparent pointer-events-none"></div>
+                <div class="absolute z-10 bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-secondary-50 to-transparent pointer-events-none"></div>
             </div>
             <div class="col-span-5 md:col-span-3 text-center md:text-left">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ __t('home.scrape.title') }}</h2>
@@ -133,7 +133,7 @@ const clearSearch = () => {
                             @focus="showDropdown = true"
                             @input="showDropdown = true"
                             :placeholder="__t('home.scrape.placeholder')"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-secondary-400 focus:border-secondary-400"
                         />
 
                         <button
@@ -190,7 +190,7 @@ const clearSearch = () => {
                             </div>
                         </div>
                     </div>
-                    <button @click="telusuriKomentar" class="justify-center text-nowrap flex items-center bg-primary-600 text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-700 transition duration-200">
+                    <button @click="telusuriKomentar" class="justify-center text-nowrap flex items-center bg-secondary-400 text-white font-medium py-3 px-6 rounded-lg hover:bg-secondary-500 transition duration-200">
                         <i class="ti ti-search mr-2"></i> {{ __t('home.scrape.button') }}
                     </button>
                 </div>

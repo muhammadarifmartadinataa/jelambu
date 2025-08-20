@@ -39,6 +39,7 @@ class BerandaController extends Controller
         ]);
         
         return Inertia::render('Beranda', [
+            'statsWisata' => Wisata::count(),
             'kabupatens' => $kabupatens,
             'wisatas' => $wisatas,
             'currentLang' => $lang,
