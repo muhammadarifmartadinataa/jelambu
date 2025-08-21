@@ -125,8 +125,7 @@ const scrollToBottom = async () => {
         <Head :title="__t('nav.chatbot')" />
 
         <!-- Hero Section -->
-        <section class="bg-primary-600 text-white py-16 relative overflow-hidden mt-20">
-            <div class="absolute top-0 left-0 w-full h-full bg-[url('/assets/images/bg-pattern.png')] z-0 opacity-10"></div>
+        <section class="bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white py-16 relative mt-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 relative">
                 <div class="w-24 h-24 ring-4 ring-white bg-white rounded-full flex items-center justify-center mx-auto mb-6">
                     <img :src="'/assets/images/ajelai.png'" alt="" class="w-full">
@@ -255,7 +254,7 @@ const scrollToBottom = async () => {
                                 :disabled="!newMessage.trim()"
                                 class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                             >
-                                <i class="ti ti-send"></i>
+                                <i class="ti ti-send-2"></i>
                             </button>
                         </div>
                     </div>
@@ -264,7 +263,7 @@ const scrollToBottom = async () => {
         </section>
 
         <!-- Features Section -->
-        <section class="py-16 bg-gray-50">
+        <section class="py-20 bg-gradient-to-br from-primary-50 to-secondary-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">

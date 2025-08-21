@@ -4,44 +4,11 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 const slider = ref(null)
 const interval = ref(null)
 
-const slides = ref([
-    {
-        id: 1,
-        title: 'Pantai Gigi Hiu',
-        description: 'Pantai Gigi Hiu, lanskap liar dengan deretan batu tajam menjulang seperti taring raksasa, menyajikan keindahan alam yang eksotis dan belum tersentuh. Tempat yang sempurna bagi pencari ketenangan, fotografer petualang, dan penikmat panorama luar biasa.',
-        image: '/assets/images/wisata/pantai-gigi-hiu.jpg',
-    },
-    {
-        id: 2,
-        title: 'Pantai Tanjung Setia Krui',
-        description: 'Terkenal di kalangan peselancar dunia, Pantai Tanjung Setia menyuguhkan ombak raksasa, pasir putih yang lembut, dan suasana tenang yang jauh dari keramaian. Surga tropis bagi pencinta laut, petualang, dan pencari momen sempurna.',
-        image: '/assets/images/wisata/pantai-krui-2.jpg',
-    },
-    {
-        id: 3,
-        title: 'Pantai Mutun Pesawaran',
-        description: 'Dengan air laut yang tenang, pasir putih, dan akses mudah dari pusat kota, Pantai Mutun jadi pilihan ideal untuk liburan santai bersama keluarga. Lengkap dengan wahana air, kuliner laut, dan panorama tropis yang memikat.',
-        image: '/assets/images/wisata/pantai-mutun.jpg',
-    },
-    {
-        id: 4,
-        title: 'Pantai Labuhan Jukung Krui',
-        description: 'Terkenal dengan garis pantai yang panjang dan matahari terbenam yang memukau, Labuhan Jukung jadi destinasi favorit wisatawan yang ingin bersantai, bermain ombak, atau sekadar menikmati keindahan sore di tepi Samudra Hindia.',
-        image: '/assets/images/wisata/pantai-krui.jpg',
-    },
-    {
-        id: 5,
-        title: 'Pantai Marina Kalianda',
-        description: 'Pantai Marina menawarkan suasana tropis yang segar dengan fasilitas kekinian, cocok untuk piknik keluarga, nongkrong santai, atau berburu foto Instagramable di tepi laut. Akses mudah, pemandangan memukau, dan kenyamanan yang bikin betah.',
-        image: '/assets/images/wisata/pantai-marina.jpg',
-    },
-    {
-        id: 6,
-        title: 'Pulau Pahawang',
-        description: 'Air sebening kaca, terumbu karang warna-warni, dan hamparan pasir putih membuat Pulau Pahawang jadi primadona snorkeling di Lampung. Tempat sempurna untuk melarikan diri dari hiruk pikuk dan tenggelam dalam keindahan laut tropis.',
-        image: '/assets/images/wisata/pulau-pahawang.webp',
-    },
-])
+const props = defineProps({
+    __t: Function
+})
+
+const slides = props.__t('home.hero')
 
 function next() {
     const items = slider.value.querySelectorAll('.item')
@@ -78,8 +45,18 @@ onBeforeUnmount(() => {
                 :style="{ backgroundImage: `url(${slide.image})` }">
                 <div class="overlay"></div>
                 <div class="content absolute text-white drop-shadow-md left-4 md:left-6 lg:left-8 xl:left-44">
-                    <h2 class="title text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-bold leading-tight">{{ slide.title }}</h2>
-                    <p class="description text-sm md:text-base xl:text-lg my-4 leading-relaxed">{{ slide.description }}</p>
+                    <div class="inline-flex items-center px-4 py-2 bg-primary-100 rounded-full text-primary-800 text-xs md:text-sm font-medium mb-3 md:mb-6">
+                        <i class="ti ti-star-filled text-sm md:text-base mr-2"></i>
+                        Wisata Biru Populer di Lampung
+                    </div>
+                    <h2 class="title text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-bold leading-tight mb-2 md:mb-6" v-html="slide.title"></h2>
+                    <div className="flex items-center gap-2 mb-2 md:mb-6 md:justify-start justify-center">
+                        <div class="w-5 h-5 flex justify-senter items-center">
+                            <i class="ti ti-map-pin text-secondary-300 text-lg md:text-2xl"></i>
+                        </div>
+                        <span className="text-white/90 md:text-lg text-sm">{{ slide.regency }}</span>
+                    </div>
+                    <p class="description text-sm md:text-base xl:text-lg mb-4 leading-relaxed">{{ slide.description }}</p>
                 </div>
             </li>
         </ul>
@@ -112,7 +89,8 @@ onBeforeUnmount(() => {
 
 .item:nth-child(1) .overlay,
 .item:nth-child(2) .overlay {
-    background: rgba(0, 0, 0, 0.4);
+    background: linear-gradient(to right, rgba(0,0,0,.6), rgba(0,0,0,.3));
+    inset: 0;
 }
 
 .item:nth-child(1),

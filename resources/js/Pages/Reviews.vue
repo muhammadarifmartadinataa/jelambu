@@ -108,12 +108,9 @@ const clearSearch = () => {
         <Head :title="__t('nav.reviews')" />
 
         <!-- Hero Section -->
-        <section class="bg-primary-600 text-white py-16 relative overflow-hidden mt-20">
-            <div class="absolute top-0 left-0 w-full h-full bg-[url('/assets/images/bg-pattern.png')] z-0 opacity-10"></div>
+        <section class="bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white py-20 mt-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-                <h1 class="text-3xl lg:text-4xl font-bold mb-4">
-                    {{ __t('reviews.title') }}
-                </h1>
+                <h1 class="text-3xl lg:text-4xl font-bold mb-4" v-html="__t('reviews.title')"></h1>
                 <p class="text-md lg:text-xl text-blue-100 max-w-3xl mx-auto">
                     {{ __t('reviews.description') }}
                 </p>

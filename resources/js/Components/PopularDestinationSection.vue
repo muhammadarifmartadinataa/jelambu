@@ -1,11 +1,13 @@
 <template>
-    <section class="py-16 bg-white">
+    <section class="py-20 bg-gradient-to-br from-primary-50 to-secondary-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                    {{ __t("home.popular_destinations") }}
-                </h2>
-                <p class="text-md lg:text-xl text-gray-600 max-w-3xl mx-auto">
+                <div class="inline-flex items-center px-4 py-2 bg-primary-100 rounded-full text-primary-800 text-sm font-medium mb-6">
+                    <i class="ti ti-map-pin text-base mr-2"></i>
+                    Destinations
+                </div>
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4" v-html="__t('home.popular_destinations')"></h2>
+                <p class="text-md lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                     {{ __t("home.popular_description") }}
                 </p>
             </div>
@@ -35,7 +37,7 @@
                             </div>
                             <div class="p-6">
                                 <div class="flex items-center text-sm text-gray-500 mb-2">
-                                    <i class="ti ti-map-pin-filled mr-1 text-primary-600 text-lg"></i>
+                                    <i class="ti ti-map-pin-filled mr-1 text-secondary-400 text-lg"></i>
                                     {{ wisata.kabupaten?.nama_kabupaten }}
                                 </div>
                                 <h3 class="text-xl font-semibold text-gray-900 mb-4">{{ wisata.nama }}</h3>
@@ -67,7 +69,7 @@
             <div class="text-center mt-8">
                 <Link 
                     :href="route('wisata')"
-                    class="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors duration-200"
+                    class="inline-flex items-center px-6 py-3 bg-secondary-400 text-white font-semibold rounded-lg hover:bg-secondary-500 transition-colors duration-200"
                 >
                     {{ __t("common.view_all") }}
                     <i class="ti ti-arrow-right ml-2"></i>

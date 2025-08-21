@@ -45,15 +45,10 @@ return [
         'hero_description' => 'Temukan destinasi wisata biru terbaik di Provinsi Lampung. Dari pantai eksotis hingga laut yang memukau, nikmati pengalaman tak terlupakan di tanah Sai Bumi Ruwai Jurai ini.',
         'explore_destinations' => 'Jelajahi Wisata',
         'ask_jelambu_ai' => 'Tanya Ajel AI',
-        'regencies_cities' => 'Kabupaten & Kota di Lampung',
+        'regencies_cities' => 'Kabupaten & Kota di <span class="text-secondary-400">Lampung</span>',
         'regencies_description' => 'Jelajahi kabupaten dan kota di Provinsi Lampung. Setiap daerah memiliki keunikan dan pesona wisata yang berbeda-beda.',
-        'popular_destinations' => 'Wisata Populer',
+        'popular_destinations' => 'Wisata <span class="text-secondary-400">Populer</span>',
         'popular_description' => 'Destinasi wisata biru terfavorit yang wajib dikunjungi di Lampung dengan rating tertinggi dan ulasan terbaik.',
-        'need_help_planning' => 'Butuh Bantuan Merencanakan Liburan?',
-        'jelambu_description' => 'Tanya Ajel AI untuk mendapatkan rekomendasi wisata yang sesuai dengan preferensi Anda. AI assistant kami siap membantu 24/7!',
-        'chat_with_jelambu' => 'Chat Ajel AI',
-        'available_24_7' => 'Tersedia 24/7',
-        'multi_language' => 'Multi Bahasa',
         'what_they_say' => 'Apa Kata Mereka',
         'reviews_description' => 'Dengarkan pengalaman luar biasa dari para wisatawan yang telah menjelajahi keindahan Lampung.',
         'stats' => [
@@ -68,17 +63,80 @@ return [
             'button' => 'Tanya Sekarang'
         ],
         'scrape' => [
-            'title' => 'Ingin tahu komentar orang lain tentang wisata favoritmu?',
+            'title' => 'Ingin tahu komentar orang lain tentang <span class="text-secondary-400">wisata favoritmu?</span>',
             'description' => 'Temukan insight langsung dari percakapan orang-orang di Twitter/X tentang destinasi wisata di Lampung. Kamu bisa cari berdasarkan nama tempat dan lihat pendapat asli mereka.',
             'placeholder' => 'Pilih kata kunci atau destinasi',
             'button' => 'Scrape Tweet'
+        ],
+        'cta' => [
+            'need_help_planning' => 'Butuh Bantuan Merencanakan <span class="text-secondary-400">Liburanmu?</span>',
+            'jelambu_description' => 'Tanya Ajel AI untuk mendapatkan rekomendasi wisata yang sesuai dengan preferensi Anda. AI assistant kami siap membantu 24/7!',
+            'chat_with_jelambu' => 'Chat Ajel AI',
+            'available_24_7' => 'Tersedia 24/7',
+            'multi_language' => 'Multi Bahasa',
+            'chat' => [
+                'title' => 'Chat dengan AI',
+                'description' => 'Konsultasi gratis 24/7'
+            ],
+            'call' => [
+                'title' => 'Hubungi Kami',
+                'description' => 'Tersedia 24/7'
+            ],
+            'email' => [
+                'title' => 'Email Support',
+                'description' => 'Respon dalam 24 jam'
+            ],
+        ],
+        'hero' => [
+            [
+                'id' => 1,
+                'title' => 'Pantai Gigi Hiu <span class="text-secondary-400">Tanggamus</span>',
+                'description' => 'Deretan karang runcing menjulang seperti taring; liar namun memikat. Spot andalan untuk berburu foto dramatis dan menikmati sunyi pesisir Tanggamus.',
+                'regency' => 'Kabupaten Tanggamus',
+                'image' => '/assets/images/wisata/pantai-gigi-hiu.jpg',
+            ],
+            [
+                'id' => 2,
+                'title' => 'Pantai Tanjung Setia <span class="text-secondary-400">Krui</span>',
+                'description' => 'Ombak kelas dunia mengundang peselancar; pasir putih dan suasana santai jauh dari hiruk pikuk menjadikannya surga tropis di Pesisir Barat.',
+                'regency' => 'Kabupaten Lampung Barat',
+                'image' => '/assets/images/wisata/pantai-krui-2.jpg',
+            ],
+            [
+                'id' => 3,
+                'title' => 'Pantai Mutun <span class="text-secondary-400">Pesawaran</span>',
+                'description' => 'Airnya tenang dan akses dekat kota; pilihan keluarga untuk berenang ringan, menikmati wahana, dan menyantap olahan laut.',
+                'regency' => 'Kabupaten Pesawaran',
+                'image' => '/assets/images/wisata/pantai-mutun.jpg',
+            ],
+            [
+                'id' => 4,
+                'title' => 'Pantai Labuhan Jukung <span class="text-secondary-400">Krui</span>',
+                'description' => 'Garis pantai panjang berhadapan Samudra Hindia; senja terkenal cantik, cocok untuk santai, main ombak, atau jogging di tepi pantai.',
+                'regency' => 'Kabupaten Lampung Barat',
+                'image' => '/assets/images/wisata/pantai-krui.jpg',
+            ],
+            [
+                'id' => 5,
+                'title' => 'Pantai Marina <span class="text-secondary-400">Kalianda</span>',
+                'description' => 'Nuansa tropis dengan fasilitas kekinian; pas untuk piknik, nongkrong sore, dan berburu foto. Akses mudah, area nyaman untuk keluarga.',
+                'regency' => 'Kabupaten Lampung Selatan',
+                'image' => '/assets/images/wisata/pantai-marina.jpg',
+            ],
+            [
+                'id' => 6,
+                'title' => 'Pulau Pahawang <span class="text-secondary-400">Pesawaran</span>',
+                'description' => 'Air sebening kaca dengan terumbu karang warna-warni; favorit snorkeling dan tempat kabur sejenak dari keramaian kota.',
+                'regency' => 'Kabupaten Pesawaran',
+                'image' => '/assets/images/wisata/pulau-pahawang.webp',
+            ],
         ]
     ],
     
     // Regencies Page
     'regencies' => [
-        'title' => 'Kabupaten & Kota di',
-        'subtitle' => 'Lampung',
+        'title' => 'Kabupaten & Kota',
+        'subtitle' => 'di Lampung',
         'description' => 'Jelajahi kabupaten dan kota di Provinsi Lampung. Setiap daerah memiliki keunikan dan pesona wisata yang berbeda-beda.',
         'search_placeholder' => 'Cari kabupaten atau kota...',
         'total_regencies' => 'Total Kabupaten & Kota',
@@ -140,7 +198,7 @@ return [
         'description' => 'Asisten wisata AI yang siap membantu Anda menemukan destinasi wisata biru terbaik di Lampung. Tanyakan apa saja tentang wisata dan tips perjalanan!',
         'travel_assistant' => 'Asisten Wisata Jelambu',
         'type_message' => 'Ketik pertanyaan anda di sini...',
-        'quick_questions' => 'Pertanyaan Cepat:',
+        'quick_questions' => 'Pertanyaan Cepat',
         'ready_to_help' => 'Halo! Saya Ajel, asisten wisata Anda. Saya siap membantu Anda menemukan informasi tentang destinasi wisata biru terbaik di Lampung. Ada yang bisa saya bantu?',
         'what_can_ask' => 'Apa yang Bisa Ditanyakan ke Ajel AI?',
         'ai_description' => 'Ajel dilengkapi dengan pengetahuan tentang wisata biru Lampung dan siap membantu merencanakan perjalanan Anda.',
@@ -171,7 +229,7 @@ return [
     ],
 
     'reviews' => [
-        'title' => 'Tarik Ulasan',
+        'title' => 'Tarik <span class="text-secondary-300">Ulasan</span>',
         'description' => 'Cari tahu apa yang orang - orang katakan di Platform Twitter atau X tentang destinasi wisata di Lampung.',
         'placeholder' => 'Pilih kata kunci atau destinasi',
         'button' => 'Tarik',

@@ -8,13 +8,15 @@ defineProps({
 </script>
 
 <template>
-    <section class="py-16 bg-secondary-50">
+    <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                    {{ __t('home.regencies_cities') }}
-                </h2>
-                <p class="text-md lg:text-xl text-gray-600 max-w-3xl mx-auto">
+                <div class="inline-flex items-center px-4 py-2 bg-secondary-100 rounded-full text-secondary-800 text-sm font-medium mb-6">
+                    <i class="ti ti-map text-base mr-2"></i>
+                    Regencies
+                </div>
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4" v-html="__t('home.regencies_cities')"></h2>
+                <p class="text-md lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                     {{ __t('home.regencies_description') }}
                 </p>
             </div>
@@ -23,7 +25,7 @@ defineProps({
                 <Link :href="route('wisata', { kabupaten_id: kabupaten.id })"
                     v-for="kabupaten in kabupatens.slice(0, 3)" 
                     :key="kabupaten.id"
-                    class="group bg-white rounded-xl shadow-sm hover:shadow-lg hover:ring-2 hover:ring-secondary-400 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden relative"
+                    class="group bg-white rounded-xl shadow-sm hover:shadow-lg border hover:ring-2 hover:ring-secondary-400 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden relative"
                 >
                     <img :src="'/storage/' + kabupaten.logo" :alt="kabupaten.nama_kabupaten" class="absolute -bottom-10 -right-16 group-hover:bottom-1 group-hover:-right-4 transition-all duration-300 z-0 opacity-10 group-hover:opacity-60">
                     <div class="p-6 relative z-10">

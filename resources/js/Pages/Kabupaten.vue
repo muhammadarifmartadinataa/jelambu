@@ -32,11 +32,10 @@ const filteredKabupatens = computed(() => {
         <Head :title="__t('nav.regencies')" />
 
         <!-- Hero Section -->
-        <section class="bg-primary-600 text-white py-16 relative overflow-hidden mt-20">
-            <div class="absolute top-0 left-0 w-full h-full bg-[url('/assets/images/bg-pattern.png')] z-0 opacity-10"></div>
+        <section class="bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white py-20 mt-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                 <h1 class="text-3xl lg:text-4xl font-bold mb-4">
-                    {{ __t('regencies.title') }} {{ __t('regencies.subtitle') }}
+                    {{ __t('regencies.title') }} <span class="text-secondary-300">{{ __t('regencies.subtitle') }}</span>
                 </h1>
                 <p class="text-md lg:text-xl text-blue-100 max-w-3xl mx-auto">
                     {{ __t('regencies.description') }}
@@ -114,21 +113,20 @@ const filteredKabupatens = computed(() => {
         </section>
 
         <!-- CTA Section -->
-        <section class="py-16 bg-secondary-400 text-white relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-full bg-[url('/assets/images/bg-pattern.png')] z-0 opacity-10"></div>
+        <section class="py-20 bg-gradient-to-br from-primary-50 to-secondary-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                 <div class="max-w-3xl mx-auto">
-                    <h2 class="text-3xl lg:text-4xl font-bold mb-4">
+                    <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-gray-900">
                         {{ __t('regencies.ready_to_explore') }}
                     </h2>
-                    <p class="text-md lg:text-xl text-blue-100 mb-8">
+                    <p class="text-md lg:text-xl text-gray-600 mb-8">
                         {{ __t('regencies.explore_description') }}
                     </p>
                     <Link 
                         :href="route('wisata')"
-                        class="inline-flex items-center px-5 py-3 bg-white text-secondary-400 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                        class="inline-flex items-center px-5 py-3 bg-white text-primary-600 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
                     >
-                        <i class="ti ti-compass mr-2 text-2xl"></i>
+                        <i class="ti ti-map-pin mr-2 text-2xl"></i>
                         {{ __t('regencies.explore_all_destinations') }}
                     </Link>
                 </div>

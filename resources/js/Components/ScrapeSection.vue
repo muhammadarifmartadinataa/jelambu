@@ -62,8 +62,6 @@ function selectItem(item) {
 }
 
 onMounted(() => {
-    console.log(props.keywords);
-    
     if (swiperContainer.value) {
         new Swiper(swiperContainer.value, {
             modules: [Autoplay],
@@ -104,7 +102,7 @@ const clearSearch = () => {
 </script>
 
 <template>
-    <section class="py-16 bg-secondary-50">
+    <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-5 gap-16 items-center">
             <div class="col-span-5 md:col-span-2 relative">
                 <div class="swiper h-96 overflow-hidden px-1" ref="swiperContainer">
@@ -117,12 +115,16 @@ const clearSearch = () => {
                         </div>
                     </div>
                 </div>
-                <div class="absolute z-10 top-0 left-0 right-0 h-20 bg-gradient-to-b from-secondary-50 to-transparent pointer-events-none"></div>
-                <div class="absolute z-10 bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-secondary-50 to-transparent pointer-events-none"></div>
+                <div class="absolute z-10 top-0 left-0 right-0 h-28 bg-gradient-to-b from-white to-transparent pointer-events-none"></div>
+                <div class="absolute z-10 bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
             </div>
             <div class="col-span-5 md:col-span-3 text-center md:text-left">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ __t('home.scrape.title') }}</h2>
-                <p class="text-md md:text-lg text-gray-600 max-w-3xl mx-auto mb-6">
+                <div class="inline-flex items-center px-4 py-2 bg-secondary-100 rounded-full text-secondary-800 text-sm font-medium mb-6">
+                    <i class="ti ti-brand-x text-base mr-2"></i>
+                    Twitter Scraper
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4" v-html="__t('home.scrape.title')"></h2>
+                <p class="text-md md:text-lg text-gray-600 max-w-3xl mx-auto mb-6 leading-relaxed">
                     {{ __t('home.scrape.description') }}
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
@@ -147,11 +149,11 @@ const clearSearch = () => {
 
                         <div
                             v-show="showDropdown && (filteredKeywords.length || filteredDestinations.length)"
-                            class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto p-4 space-y-3"
+                            class="absolute z-20 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto p-4 space-y-3"
                         >
                             <!-- Keywords -->
                             <div v-if="filteredKeywords.length">
-                                <h4 class="text-sm text-gray-500 mb-1">Kata Kunci</h4>
+                                <h4 class="text-sm text-gray-500 mb-1 text-left">Kata Kunci</h4>
                                 <div class="flex flex-wrap gap-2">
                                     <button
                                         v-for="(kw, i) in filteredKeywords"
@@ -171,7 +173,7 @@ const clearSearch = () => {
 
                             <!-- Destinations -->
                             <div v-if="filteredDestinations.length">
-                                <h4 class="text-sm text-gray-500 mt-2 mb-1">Destinasi</h4>
+                                <h4 class="text-sm text-gray-500 mt-2 mb-1 text-left">Destinasi</h4>
                                 <div class="flex flex-wrap gap-2">
                                     <button
                                         v-for="(dst, i) in filteredDestinations"
