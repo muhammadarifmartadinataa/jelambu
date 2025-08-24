@@ -129,13 +129,13 @@ const clearSearch = () => {
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
                     <div class="relative w-full" ref="dropdownRef">
-                        <input
+                        <input readonly
                             type="text"
                             v-model="searchQuery"
                             @focus="showDropdown = true"
                             @input="showDropdown = true"
                             :placeholder="__t('home.scrape.placeholder')"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-secondary-400 focus:border-secondary-400"
+                            class="cursor-default w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-secondary-400 focus:border-secondary-400"
                         />
 
                         <button
