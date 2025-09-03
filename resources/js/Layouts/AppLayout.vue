@@ -251,6 +251,11 @@ onUnmounted(() => {
                 </div>
 
                 <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                    <div class="flex items-center justify-center space-x-4 mb-4">
+                        <img src="/assets/images/logo-dikti.png" alt="Jelambu" class="h-14">
+                        <img src="/assets/images/logo-bima.png" alt="Jelambu" class="h-14">
+                        <img src="/assets/images/logo-teknokrat.png" alt="Jelambu" class="h-14">
+                    </div>
                     <p>&copy; 2025 Jelambu. {{ __t('footer.all_rights_reserved') }}</p>
                 </div>
             </div>
