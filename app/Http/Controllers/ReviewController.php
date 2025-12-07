@@ -6,6 +6,7 @@ use App\Helpers\SeoHelper;
 use App\Models\Keyword;
 use App\Models\Wisata;
 use Carbon\Carbon;
+use HosseinHezami\LaravelGemini\Facades\Gemini;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -98,24 +99,14 @@ class ReviewController extends Controller
         $allText = collect($tweets)->pluck('text')->implode("\n\n");
         $prompt = "Berikut adalah komentar netizen tentang '" . $query . "':\n\n" . $allText . "\n\nBuat kesimpulan dalam format HTML ringan (gunakan <ul>, <p>, atau <strong>) jangan pakai simbol markdown. Jangan mengarang, rangkum dari komentar di atas. Gunakan bahasa Indonesia.";
 
-        $geminiResponse = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'X-goog-api-key' => env('GEMINI_API_KEY'),
-        ])->post('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent', [
-            'contents' => [
-                [
-                    'parts' => [
-                        ['text' => $prompt]
-                    ]
-                ]
-            ],
-            'generationConfig' => [
-                'temperature' => 0.7,
-                'maxOutputTokens' => 1024,
-            ]
-        ]);
+        $geminiResponse = Gemini::text()
+            ->model('gemini-2.5-flash-lite')
+            ->prompt($prompt)
+            ->temperature(0.7)
+            ->maxTokens(2048)
+            ->generate();
 
-        $summary = $geminiResponse['candidates'][0]['content']['parts'][0]['text'] ?? 'Maaf, tidak bisa memberikan kesimpulan.';
+        $summary = $geminiResponse->content() ?? 'Maaf, tidak bisa memberikan kesimpulan.';
 
         Cache::put("tweets:{$query}", $tweets, now()->addMonth());
         Cache::put("summary:{$query}", $summary, now()->addMonth());

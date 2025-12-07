@@ -22,7 +22,7 @@ class RateLimiterServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('chatbot', function ($request) {
-            return Limit::perMinute(100)->by($request->ip());
+            return Limit::perMinute(3)->by($request->ip());
         });
 
         RateLimiter::for('search-comments', function ($request) {

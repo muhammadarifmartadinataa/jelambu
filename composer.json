@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "filament/filament": "3.3",
+        "hosseinhezami/laravel-gemini": "^1.0",
         "inertiajs/inertia-laravel": "^2.0",
         "kub-at/php-simple-html-dom-parser": "^1.9",
         "laravel/framework": "^12.0",

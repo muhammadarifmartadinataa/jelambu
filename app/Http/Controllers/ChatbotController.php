@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Helpers\SeoHelper;
 use Illuminate\Http\Request;
 use App\Models\Wisata;
+use HosseinHezami\LaravelGemini\Facades\Gemini;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class ChatbotController extends Controller
@@ -57,32 +59,30 @@ class ChatbotController extends Controller
     
     private function generateResponse($question)
     {   
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'X-goog-api-key' => env('GEMINI_API_KEY'),
-        ])->post('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent', [
-            'contents' => [
-                [
-                    'parts' => [
-                        [
-                            'text' => "Kamu adalah Ajel, asisten wisata biru dari Jelambu (Jelajah Lampung Biru). Ini adalah website informasi wisata biru di Lampung. Jawabanmu harus **hanya berupa isi konten HTML** (tanpa tag <html>, <head>, <body> atau tanda ```html```) dan tanpa gambar. Gunakan tag seperti <strong>, <p>, <ul>, <hr>, <h2>, dll untuk membuat tampilannya menarik. Topik pertanyaan: {$question}"
-                        ]
-                    ]
-                ]
-            ],
-            'generationConfig' => [
-                'temperature' => 0.7,
-                'topK' => 1,
-                'topP' => 1,
-                'maxOutputTokens' => 1024,
-            ]
-        ]);
+        $systemInstruction = "Kamu adalah Ajel, asisten wisata biru dari Jelambu (Jelajah Lampung Biru). Ini adalah website informasi wisata biru di Lampung. Jawabanmu harus **hanya berupa isi konten HTML** (tanpa tag <html>, <head>, <body> atau tanda ```html```) dan tanpa gambar. Gunakan tag seperti <strong>, <p>, <ul>, <hr>, <h2>, dll untuk membuat tampilannya menarik.";
 
-        $reply = $response['candidates'][0]['content']['parts'][0]['text'] ?? 'Maaf, saya belum punya informasi itu.';
+        try {
+            $response = Gemini::text()
+                ->model('gemini-2.5-flash-lite')
+                ->system($systemInstruction)
+                ->prompt($question)
+                ->temperature(0.7)
+                ->maxTokens(2048)
+                ->generate();
 
-        return response()->json([
-            'reply' => $reply
-        ]);
+            $reply = $response->content();
+
+            return response()->json([
+                'reply' => $reply
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Gemini Error: ' . $e->getMessage());
+            
+            return response()->json([
+                'reply' => 'Maaf, Ajel sedang mengalami gangguan koneksi. Coba tanyakan hal lain ya!'
+            ], 500);
+        }
     }
     
     private function getTranslations($lang)
